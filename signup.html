@@ -11,6 +11,8 @@
   <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="css/set1.css">
   <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" type="text/css" href="css/cs-select.css" />
+  <link rel="stylesheet" type="text/css" href="css/cs-skin-elastic.css" />
 
   <!--Google Fonts-->
   <link href='https://fonts.googleapis.com/css?family=Playfair+Display' rel='stylesheet' type='text/css'>
@@ -42,56 +44,66 @@
       <!-- /.container-fluid -->
   </nav>
   <header class="header">
-    <span>Need an account?</span>
     <h3>Create Account, Make Profits.</h3>
   </header>
 <div id="main-wrapper">
   <div class="container-fluid">
     <div class="row">
-      <form class="" action="index.html" method="post">
+      <form class="" action="index.html" method="post" name="signform" onsubmit="return signup()" novalidate>
         <div class="col-md-6 left-side">
           <span class="input input--hoshi">
-            <input class="input__field input__field--hoshi" type="text" id="username" required/>
-            <label class="input__label input__label--hoshi input__label--hoshi-color-3" for="name">
+            <input class="input__field input__field--hoshi" type="text" id="username" name="username" required/>
+            <label class="input__label input__label--hoshi input__label--hoshi-color-3" for="username">
               <span class="input__label-content input__label-content--hoshi">UserName</span>
             </label>
           </span>
           <span class="input input--hoshi">
-            <input class="input__field input__field--hoshi" type="email" id="email" required/>
+            <input class="input__field input__field--hoshi" type="email" name="email" id="email" required/>
             <label class="input__label input__label--hoshi input__label--hoshi-color-3" for="email">
               <span class="input__label-content input__label-content--hoshi">E-mail</span>
             </label>
           </span>
           <span class="input input--hoshi">
-            <input class="input__field input__field--hoshi" type="number" id="number" />
-            <label class="input__label input__label--hoshi input__label--hoshi-color-3" for="number">
+            <input class="input__field input__field--hoshi" type="text" name="pnumber" id="pnumber" required/>
+            <label class="input__label input__label--hoshi input__label--hoshi-color-3" for="pnumber">
               <span class="input__label-content input__label-content--hoshi">Phone Number</span>
             </label>
           </span>
+          <select class="cs-select cs-skin-elastic">
+  					<option value="" disabled selected>Please! select your bank</option>
+  					<option value="Diamond Bank">Diamond Bank</option>
+  					<option value="First Bank">First Bank</option>
+  					<option value="Sky Bank">Sky Bank</option>
+  					<option value="Eco Bank">Eco Bank</option>
+            <option value="Keystone Bank">Keystone Bank</option>
+  					<option value="Guaranty Trust Bank">Guaranty Trust Bank</option>
+            <option value="Wema Bank">Wema Bank</option>
+  					<option value="UBA Bank">UBA Bank</option>
+  				</select>
+        </div>
+        <div class="col-md-6 right-side">
           <span class="input input--hoshi">
-            <input class="input__field input__field--hoshi" type="number" id="accnumber" required/>
+            <input class="input__field input__field--hoshi" type="text" name="accnumber" id="accnumber" required/>
             <label class="input__label input__label--hoshi input__label--hoshi-color-3" for="accnumber">
               <span class="input__label-content input__label-content--hoshi">Account Number</span>
             </label>
           </span>
-        </div>
-        <div class="col-md-6 right-side">
           <span class="input input--hoshi">
-            <input class="input__field input__field--hoshi" type="text" id="accname" required/>
+            <input class="input__field input__field--hoshi" type="text" name="accname" id="accname" required/>
             <label class="input__label input__label--hoshi input__label--hoshi-color-3" for="accname">
               <span class="input__label-content input__label-content--hoshi">Account Name</span>
             </label>
           </span>
           <span class="input input--hoshi">
-            <input class="input__field input__field--hoshi" type="password" id="password" required/>
+            <input class="input__field input__field--hoshi" type="password" name="password" id="password" required/>
             <label class="input__label input__label--hoshi input__label--hoshi-color-3" for="password">
               <span class="input__label-content input__label-content--hoshi">Password</span>
             </label>
           </span>
           <span class="input input--hoshi">
-            <input class="input__field input__field--hoshi" type="password" id="password1" required/>
-            <label class="input__label input__label--hoshi input__label--hoshi-color-3" for="password1">
-              <span class="input__label-content input__label-content--hoshi">Repeat Passowrd</span>
+            <input class="input__field input__field--hoshi" type="password" name="rpassword" id="rpassword" required/>
+            <label class="input__label input__label--hoshi input__label--hoshi-color-3" for="rpassword">
+              <span class="input__label-content input__label-content--hoshi">Repeat Password</span>
             </label>
           </span>
           <div class="cta">
@@ -112,6 +124,15 @@
 <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
 <script src="js/scripts.js"></script>
 <script src="js/classie.js"></script>
+<script src="js/validate.js"></script>
+<script src="js/selectFx.js"></script>
+<script>
+  (function() {
+    [].slice.call( document.querySelectorAll( 'select.cs-select' ) ).forEach( function(el) {
+      new SelectFx(el);
+    } );
+  })();
+</script>
 <script>
   (function() {
     // trim polyfill : https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/Trim

@@ -48,7 +48,7 @@
 <div id="main-wrapper">
   <div class="container-fluid">
     <div class="row">
-      <form class="" action="index.html" method="post">
+      <form class="" action="index.html" method="post" name="logform" onsubmit="return login()">
         <div class="col-md-6 right-side" style="float: none;margin: auto">
           <span class="input input--hoshi">
             <input class="input__field input__field--hoshi" type="text" id="username" name="username" required/>
@@ -80,6 +80,7 @@
 <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
 <script src="js/scripts.js"></script>
 <script src="js/classie.js"></script>
+<script src="js/validate.js"></script>
 <script>
   (function() {
     // trim polyfill : https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/Trim
