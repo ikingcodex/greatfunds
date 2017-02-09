@@ -49,7 +49,7 @@
 <div id="main-wrapper">
   <div class="container-fluid">
     <div class="row">
-      <form class="" action="index.php" method="post" name="signform" onsubmit="return signup()" novalidate>
+      <form class="" action="signup.php" method="post" name="signform" onsubmit="return signup()" novalidate>
         <div class="col-md-6 left-side">
           <span class="input input--hoshi">
             <input class="input__field input__field--hoshi" type="text" id="username" name="username" required/>
@@ -73,12 +73,22 @@
   					<option value="" disabled selected>Please! select your bank</option>
   					<option value="Diamond Bank">Diamond Bank</option>
   					<option value="First Bank">First Bank</option>
-  					<option value="Sky Bank">Sky Bank</option>
+  					<option value="Skye Bank">Skye Bank</option>
   					<option value="Eco Bank">Eco Bank</option>
             <option value="Keystone Bank">Keystone Bank</option>
   					<option value="Guaranty Trust Bank">Guaranty Trust Bank</option>
             <option value="Wema Bank">Wema Bank</option>
   					<option value="UBA Bank">UBA Bank</option>
+            <option value="Access Bank">Access Bank</option>
+            <option value="City Bank">City Bank</option>
+            <option value="Enterprise Bank">Enterprise Bank</option>
+            <option value="Fidelity Bank">Fidelity Bank</option>
+            <option value="First City Monument Bank">First City Monument Bank</option>
+            <option value="Heritage Bank">Heritage Bank</option>
+            <option value="Stanbic IBTC Bank">Stanbic IBTC Bank</option>
+            <option value="Standard Chartered Bank">Standard Chartered Bank</option>
+            <option value="Union Bank">Union Bank</option>
+            <option value="Zenith Bank">Zenith Bank</option>
   				</select>
         </div>
         <div class="col-md-6 right-side">

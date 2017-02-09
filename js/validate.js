@@ -72,4 +72,8 @@ function login(){
     alert("Password field cannot be empty");
     return false;
   }
+  if(password.length < 6){
+    alert("Password must be at least 6 characters long.");
+    return false;
+  }
 }

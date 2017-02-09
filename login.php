@@ -48,7 +48,7 @@
 <div id="main-wrapper">
   <div class="container-fluid">
     <div class="row">
-      <form class="" action="index.html" method="post" name="logform" onsubmit="return login()">
+      <form class="" action="login.php" method="post" name="logform" onsubmit="return login()">
         <div class="col-md-6 right-side" style="float: none;margin: auto">
           <span class="input input--hoshi">
             <input class="input__field input__field--hoshi" type="text" id="username" name="username" required/>
