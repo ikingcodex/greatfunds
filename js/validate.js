@@ -65,7 +65,7 @@ function login(){
     return false;
   }
   if (!ck_username.test(username)) {
-    alert("please enter a valid username, username must be atleast 6 characters long")
+    alert("please enter a valid username, username must be atleast 6 characters long and contain no special character except the underscore ( _ )")
     return false;
   }
   if (password == null || password == ""){
