@@ -28,7 +28,7 @@
               <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
                   <span class="sr-only">Toggle navigation</span> Menu <i class="fa fa-bars"></i>
               </button>
-              <a class="navbar-brand page-scroll" href="index.html">Great Funds</a>
+              <a class="navbar-brand page-scroll" href="index.php">Great Funds</a>
           </div>
 
           <!-- Collect the nav links, forms, and other content for toggling -->
@@ -49,7 +49,7 @@
 <div id="main-wrapper">
   <div class="container-fluid">
     <div class="row">
-      <form class="" action="index.html" method="post" name="signform" onsubmit="return signup()" novalidate>
+      <form class="" action="index.php" method="post" name="signform" onsubmit="return signup()" novalidate>
         <div class="col-md-6 left-side">
           <span class="input input--hoshi">
             <input class="input__field input__field--hoshi" type="text" id="username" name="username" required/>
@@ -110,7 +110,7 @@
             <button class="btn btn-primary pull-left">
               Sign-Up Now
             </button>
-            <span><a href="./login.html">I am already a member</a></span>
+            <span><a href="./login.php">I am already a member</a></span>
           </div>
         </div>
       </form>

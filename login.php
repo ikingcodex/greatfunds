@@ -26,7 +26,7 @@
               <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
                   <span class="sr-only">Toggle navigation</span> Menu <i class="fa fa-bars"></i>
               </button>
-              <a class="navbar-brand page-scroll" href="index.html">Great Funds</a>
+              <a class="navbar-brand page-scroll" href="index.php">Great Funds</a>
           </div>
 
           <!-- Collect the nav links, forms, and other content for toggling -->
@@ -66,7 +66,7 @@
             <button class="btn btn-primary pull-left">
               Login Now
             </button>
-            <span><a href="./signup.html">not yet a member?</a></span> <span style="font-family: 'Playfair Display', serif; font-size:22px;margin:5px">OR</span><span><a href="">forgot your password?</a></span>
+            <span><a href="./signup.php">not yet a member?</a></span> <span style="font-family: 'Playfair Display', serif; font-size:22px;margin:5px">OR</span><span><a href="">forgot your password?</a></span>
           </div>
         </div>
       </form>

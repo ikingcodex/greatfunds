@@ -62,10 +62,10 @@
                           <a class="page-scroll" href="">Community</a>
                       </li>
                       <li>
-                          <a class="page-scroll" href="./signup.html">SignUp</a>
+                          <a class="page-scroll" href="./signup.php">SignUp</a>
                       </li>
                       <li>
-                          <a class="page-scroll" href="./login.html">Log-in</a>
+                          <a class="page-scroll" href="./login.php">Log-in</a>
                       </li>
                   </ul>
               </div>
@@ -81,7 +81,7 @@
                       <div class="header-content">
                           <div class="header-content-inner">
                               <h1>Want to make 100% profit on investment?, join <strong>Great Funds</strong>. The online platform that gives you 100% profit on investment.</h1>
-                              <a href="./signup.html" class="btn btn-outline btn-xl page-scroll">Start Making Money Now for Free!</a>
+                              <a href="./signup.php" class="btn btn-outline btn-xl page-scroll">Start Making Money Now for Free!</a>
                           </div>
                       </div>
                   </div>
@@ -184,7 +184,7 @@
           <div class="cta-content">
               <div class="container">
                   <h2>Stop waiting.<br>Start making.</h2>
-                  <a href="./signup.html" class="btn btn-outline btn-xl page-scroll">Let's Get Started!</a>
+                  <a href="./signup.php" class="btn btn-outline btn-xl page-scroll">Let's Get Started!</a>
               </div>
           </div>
           <div class="overlay"></div>
