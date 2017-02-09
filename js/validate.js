@@ -8,6 +8,7 @@ function signup(){
   var bank = document.signform.bank.value;
   var password = document.signform.password.value;
   var rpassword = document.signform.rpassword.value;
+  var terms = document.signform.terms;
 
   if ((username == null || username == "") || (email == null || email == "") || (pnumber == null || pnumber == "")){
     alert("please fill in all fields, as all fields are required.");
@@ -35,6 +36,10 @@ function signup(){
     alert("please enter a valid 11 digit phone number, i.e 080-00-00-0000");
     return false;
   }
+  if (!(terms.checked)) {
+    alert("Kindly read and agree to our terms and conditions");
+    return false;
+  }
   if (isNaN(accnumber)){
     alert("please enter a valid account number");
     return false;
@@ -47,6 +52,9 @@ function signup(){
     alert("password must be same!");
     return false;
   }
+
+// ==================================================
+
  //  if (bank == null || bank == ""){
  //   alert("nothing was selected");
  //   return false;
@@ -54,6 +62,8 @@ function signup(){
  // else {
  //   alert(bank + " was selected");
  // }
+
+ // ===================================================
 }
 
 function login(){

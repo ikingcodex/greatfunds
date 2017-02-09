@@ -90,6 +90,8 @@
             <option value="Union Bank">Union Bank</option>
             <option value="Zenith Bank">Zenith Bank</option>
   				</select>
+          <input id="toggleButton11" type="checkbox" name="terms" id="terms" value="terms">
+          <label for="toggleButton11">Do you agree with our <a href="">TERMS</a> and conditions?</label>
         </div>
         <div class="col-md-6 right-side">
           <span class="input input--hoshi">
