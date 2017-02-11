@@ -1,3 +1,27 @@
+<?php
+require_once 'class.db.php';
+
+if($user->is_loggedin())
+{
+ $user->redirect('index.php');
+}
+
+if(isset($_POST['btn-login']))
+{
+ $username = htmlspecialchars(strip_tags(trim($_POST['username'])));
+ $password = htmlspecialchars(strip_tags(trim($_POST['password'])));
+
+ if($user->login($username,$password))
+ {
+  $user->redirect('index.php');
+ }
+ else
+ {
+  $error = "Wrong Details !";
+ }
+}
+?>
+
 <!doctype html>
 <html lang="en">
 <head>
@@ -63,7 +87,7 @@
             </label>
           </span>
           <div class="cta" style="padding-left: 10px">
-            <button class="btn btn-primary pull-left">
+            <button type="submit" name="btn-login" class="btn btn-primary pull-left">
               Login Now
             </button>
             <span><a href="./signup.php">not yet a member?</a></span> <span style="font-family: 'Playfair Display', serif; font-size:22px;margin:5px">OR</span><span><a href="">forgot your password?</a></span>

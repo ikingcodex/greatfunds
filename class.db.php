@@ -25,3 +25,8 @@ class DB {
         }
     }
 }
+
+require_once 'class.db.php';
+require_once 'class.user.php';
+$database = new DB();
+$user = new USER($database->db);

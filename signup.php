@@ -1,10 +1,7 @@
 <?php
-if($_POST){
-  require_once 'class.db.php';
-  require_once 'class.user.php';
-  $database = new DB();
-  $user = new USER($database->db);
 
+  require_once 'class.db.php';
+  
   if($user->is_loggedin())
   {
       $user->redirect('index.php');
@@ -64,7 +61,7 @@ if($_POST){
        }
     }
   }
-}
+
 ?>
 <!doctype html>
 <html lang="en">

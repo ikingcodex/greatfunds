@@ -61,9 +61,11 @@ class USER{
 
    public function is_loggedin()
    {
-      if(isset($_SESSION['user_session']))
-      {
+      if(isset($_SESSION['user_session'])){
          return true;
+      }
+      else{
+        return false;
       }
    }
 
