@@ -1,48 +1,71 @@
 <?php
 if($_POST){
+  require_once 'class.db.php';
+  require_once 'class.user.php';
+  $database = new DB();
+  $user = new USER($database->db);
 
-    // include database connection
-    require 'db.php';
-    $db = new DB();
-
-    try{
-
-        // insert query
-        $query = "INSERT INTO products SET name=:name, description=:description, price=:price, created=:created";
-
-        // prepare query for execution
-        $stmt = $con->prepare($query);
-
-        // posted values
-        $name=htmlspecialchars(strip_tags($_POST['name']));
-        $description=htmlspecialchars(strip_tags($_POST['description']));
-        $price=htmlspecialchars(strip_tags($_POST['price']));
-
-        // bind the parameters
-        $stmt->bindParam(':name', $name);
-        $stmt->bindParam(':description', $description);
-        $stmt->bindParam(':price', $price);
-
-        // specify when this record was inserted to the database
-        $created=date('Y-m-d H:i:s');
-        $stmt->bindParam(':created', $created);
-
-        // Execute the query
-        if($stmt->execute()){
-            echo "<div class='alert alert-success'>Record was saved.</div>";
-        }else{
-            echo "<div class='alert alert-danger'>Unable to save record.</div>";
-        }
-
-    }
-
-    // show error
-    catch(PDOException $exception){
-        die('ERROR: ' . $exception->getMessage());
-    }
+  if($user->is_loggedin())
+  {
+      $user->redirect('index.php');
   }
 
- ?>
+  if(isset($_POST['btn-signup']))
+  {
+
+    $username=htmlspecialchars(strip_tags(trim($_POST['username'])));
+    $email=htmlspecialchars(strip_tags(trim($_POST['email'])));
+    $pnumber=htmlspecialchars(strip_tags(trim($_POST['pnumber'])));
+    $bank=htmlspecialchars(strip_tags(trim($_POST['bank'])));
+    $acc_number=htmlspecialchars(strip_tags(trim($_POST['accnumber'])));
+    $acc_name=htmlspecialchars(strip_tags(trim($_POST['accname'])));
+    $password=htmlspecialchars(strip_tags(trim($_POST['password'])));
+
+     if($username=="") {
+        echo "provide username !";
+     }
+     else if($email=="") {
+        echo  "provide email id !";
+     }
+     else if(!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        echo 'Please enter a valid email address !';
+     }
+     else if($password == "") {
+        echo "provide password !";
+     }
+     else if(strlen($password) < 6){
+        echo "Password must be atleast 6 characters";
+     }
+     else
+     {
+        try
+        {
+           $stmt = $user->db->prepare("SELECT username,email FROM users WHERE username=:uname OR email=:umail");
+           $stmt->execute(array(':uname'=>$username, ':umail'=>$email));
+           $row=$stmt->fetch(PDO::FETCH_ASSOC);
+
+           if($row['username'] == $username) {
+              echo "sorry username already taken !";
+           }
+           else if($row['email'] == $email) {
+              echo "sorry email id already taken !";
+           }
+           else
+           {
+              if($user->register($username,$email,$pnumber,$bank,$acc_number,$acc_name,$password))
+              {
+                  $user->redirect('login.php');
+              }
+           }
+       }
+       catch(PDOException $e)
+       {
+          echo $e->getMessage();
+       }
+    }
+  }
+}
+?>
 <!doctype html>
 <html lang="en">
 <head>
@@ -94,7 +117,7 @@ if($_POST){
 <div id="main-wrapper">
   <div class="container-fluid">
     <div class="row">
-      <form class="" action="signup.php" method="post" name="signform" onsubmit="return signup()" novalidate>
+      <form class="" action="signup.php" method="post" name="signform" onsubmit="return signup()">
         <div class="col-md-6 left-side">
           <span class="input input--hoshi">
             <input class="input__field input__field--hoshi" type="text" id="username" name="username" required/>
@@ -164,7 +187,7 @@ if($_POST){
             </label>
           </span>
           <div class="cta">
-            <button class="btn btn-primary pull-left">
+            <button type="submit" class="btn btn-primary pull-left" name="btn-signup">
               Sign-Up Now
             </button>
             <span><a href="./login.php">I am already a member</a></span>

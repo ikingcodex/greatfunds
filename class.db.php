@@ -1,5 +1,6 @@
 <?php
 
+session_start();
 class DB {
     private $dbHost     = 'localhost';
     private $dbUsername = 'root';
@@ -8,7 +9,7 @@ class DB {
     public $db;
 
     /*
-     * Connect to the database and return db connecction
+     * Connect to the database and return db connection
      */
     public function __construct(){
         if(!isset($this->db)){
@@ -17,6 +18,7 @@ class DB {
                 $conn = new PDO("mysql:host=".$this->dbHost.";dbname=".$this->dbName, $this->dbUsername, $this->dbPassword);
                 $conn -> setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
                 $this->db = $conn;
+                return $this->db;
             }catch(PDOException $e){
                 die("Failed to connect with MySQL: " . $e->getMessage());
             }
