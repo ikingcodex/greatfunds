@@ -1,3 +1,16 @@
+<?php
+require_once 'class.db.php';
+
+if(!($user->is_loggedin()))
+{
+		$user->redirect('login.php');
+}
+if (isset($_POST["logout"])) {
+	if($user->logout()){
+		$user->redirect('index.php');
+	}
+}
+ ?>
 <!doctype html>
 <html lang="en">
 <head>
@@ -29,6 +42,13 @@
     <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
     <link href='http://fonts.googleapis.com/css?family=Roboto:400,700,300' rel='stylesheet' type='text/css'>
     <link href="assets/css/pe-icon-7-stroke.css" rel="stylesheet" />
+		<style>
+			.logbot{
+				background: transparent;
+				border: none;
+				padding:0px;
+			}
+		</style>
 </head>
 <body>
 
@@ -47,13 +67,13 @@
 
             <ul class="nav">
 								<li class="active">
-										<a href="table.html">
+										<a href="profile.php">
 												<i class="pe-7s-note2"></i>
 												<p>Cycle List</p>
 										</a>
 								</li>
                 <li>
-                    <a href="user.html">
+                    <a href="user.php">
                         <i class="pe-7s-user"></i>
                         <p>User Profile</p>
                     </a>
@@ -82,8 +102,10 @@
                             </a>
                         </li>
                         <li>
-                            <a href="#">
-                                <p>Log out</p>
+                            <a>
+															<form action="profile.php" method="post">
+																<input type="submit" name="logout" value="Log out" class="logbot">
+															</form>
                             </a>
                         </li>
 						<li class="separator hidden-lg hidden-md"></li>
