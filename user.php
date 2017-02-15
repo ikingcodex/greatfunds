@@ -10,6 +10,7 @@ if (isset($_POST["logout"])) {
 		$user->redirect('index.php');
 	}
 }
+// $user->userid = $_SESSION['user_session'];
  ?>
 <!doctype html>
 <html lang="en">
@@ -91,7 +92,7 @@ if (isset($_POST["logout"])) {
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="#">Hello, amanda003.</a>
+                    <a class="navbar-brand" href="#">Hello, <?php echo $_SESSION['user_session'];?>.</a>
                 </div>
                 <div class="collapse navbar-collapse">
 

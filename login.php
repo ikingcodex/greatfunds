@@ -10,7 +10,6 @@ if(isset($_POST['btn-login']))
 {
  $username = htmlspecialchars(strip_tags(trim($_POST['username'])));
  $password = htmlspecialchars(strip_tags(trim($_POST['password'])));
-
  if($user->login($username,$password))
  {
   $user->redirect('index.php');
