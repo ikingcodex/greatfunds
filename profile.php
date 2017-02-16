@@ -10,6 +10,11 @@ if (isset($_POST["logout"])) {
 		$user->redirect('index.php');
 	}
 }
+if(!($user->is_in_cycle())){
+	if (isset($_POST["cycle"])) {
+		$user->cycle();
+	}
+}
  ?>
 <!doctype html>
 <html lang="en">
@@ -34,10 +39,6 @@ if (isset($_POST["logout"])) {
     <link href="assets/css/light-bootstrap-dashboard.css" rel="stylesheet"/>
 
 
-    <!--  CSS for Demo Purpose, don't include it in your project     -->
-    <link href="assets/css/demo.css" rel="stylesheet" />
-
-
     <!--     Fonts and icons     -->
     <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
     <link href='http://fonts.googleapis.com/css?family=Roboto:400,700,300' rel='stylesheet' type='text/css'>
@@ -47,6 +48,28 @@ if (isset($_POST["logout"])) {
 				background: transparent;
 				border: none;
 				padding:0px;
+			}
+			.cycle button{
+				border: none;
+				background: purple;
+				color: white;
+				padding: 20px 50px;
+				margin-top: 30vh;
+				margin-left: 30vw;
+				box-shadow: 2px 2px 3px rgba(0, 0, 0, 0.75);
+				letter-spacing: 2px;
+				font-size: 20px;
+			}
+			.cycle button: active{
+				box-shadow: 0px 0px 0px transparent;
+			}
+			.pop button{
+				border: none;
+				margin: 5px;
+				padding: 5px 30px;
+				background-color: rgb(152, 0, 152);
+				color: white;
+				box-shadow: 2px 3px 10px black;
 			}
 		</style>
 </head>
@@ -92,7 +115,7 @@ if (isset($_POST["logout"])) {
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="#">Welcome!, click on <strong>Recycle</strong> to begin</a>
+                    <a class="navbar-brand">Welcome!, click on <strong>Recycle</strong> to begin</a>
                 </div>
                 <div class="collapse navbar-collapse">
                     <ul class="nav navbar-nav navbar-right">
@@ -117,6 +140,14 @@ if (isset($_POST["logout"])) {
         <div class="content">
             <div class="container-fluid">
                 <div class="row">
+									<?php if(!($user->is_in_cycle())){ ?>
+									<div class="cycle">
+										<form class="" action="profile.php" method="post">
+											<button type="submit" name="cycle">Recycle</button>
+										</form>
+									</div>
+									<?php } ?>
+								<?php if($user->is_in_ph()){ ?>
                     <div class="col-md-12">
                         <div class="card">
                             <div class="header">
@@ -135,46 +166,17 @@ if (isset($_POST["logout"])) {
                                     </thead>
                                     <tbody>
                                         <tr>
-                                        	<td>1</td>
-                                        	<td>Dakota Rice</td>
-                                        	<td>$36,738</td>
-                                        	<td>Niger</td>
-                                        	<td>Oud-Turnhout</td>
-                                        </tr>
-                                        <tr>
-                                        	<td>2</td>
-                                        	<td>Minerva Hooper</td>
-                                        	<td>$23,789</td>
-                                        	<td>Curaçao</td>
-                                        	<td>Sinaai-Waas</td>
-                                        </tr>
-                                        <tr>
-                                        	<td>3</td>
-                                        	<td>Sage Rodriguez</td>
-                                        	<td>$56,142</td>
-                                        	<td>Netherlands</td>
-                                        	<td>Baileux</td>
-                                        </tr>
-                                        <tr>
-                                        	<td>4</td>
-                                        	<td>Philip Chaney</td>
-                                        	<td>$38,735</td>
-                                        	<td>Korea, South</td>
-                                        	<td>Overland Park</td>
-                                        </tr>
-                                        <tr>
-                                        	<td>5</td>
-                                        	<td>Doris Greene</td>
-                                        	<td>$63,542</td>
-                                        	<td>Malawi</td>
-                                        	<td>Feldkirchen in Kärnten</td>
-                                        </tr>
-                                        <tr>
-                                        	<td>6</td>
-                                        	<td>Mason Porter</td>
-                                        	<td>$78,615</td>
-                                        	<td>Chile</td>
-                                        	<td>Gloucester</td>
+                                        	<td>kingcodex</td>
+                                        	<td>4544385783</td>
+                                        	<td>abang elshaddai samuel</td>
+                                        	<td>Diamond Bank</td>
+																					<td>08133995749</td>
+                                        	<td>
+																						<form class="pop" action="profile.php" method="post">
+																						<input type="file" name="pop">
+																						<button type="submit" name="pop_button">send</button>
+                                        	</form>
+																				</td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -183,8 +185,10 @@ if (isset($_POST["logout"])) {
                         </div>
                     </div>
 
+										<?php } ?>
 
-                    <div class="col-md-12">
+
+                    <!-- <div class="col-md-12">
                         <div class="card card-plain">
                             <div class="header">
                                 <h4 class="title">Payed By</h4>
@@ -248,7 +252,7 @@ if (isset($_POST["logout"])) {
 
                             </div>
                         </div>
-                    </div>
+                    </div> -->
 
 
                 </div>

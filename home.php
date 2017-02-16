@@ -1,3 +1,11 @@
+<?php
+require_once 'class.db.php';
+
+if($user->is_loggedin())
+{
+		$user->redirect('index.php');
+}
+ ?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
