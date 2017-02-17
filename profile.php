@@ -10,12 +10,13 @@ if (isset($_POST["logout"])) {
 		$user->redirect('index.php');
 	}
 }
-if(!($user->is_in_cycle())){
+// if(!($user->is_in_cycle())){
 	if (isset($_POST["cycle"])) {
 		$user->cycle();
 	}
-}
+// }
  ?>
+
 <!doctype html>
 <html lang="en">
 <head>
@@ -43,6 +44,7 @@ if(!($user->is_in_cycle())){
     <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
     <link href='http://fonts.googleapis.com/css?family=Roboto:400,700,300' rel='stylesheet' type='text/css'>
     <link href="assets/css/pe-icon-7-stroke.css" rel="stylesheet" />
+		<script src="js/angular.min.js"></script>
 		<style>
 			.logbot{
 				background: transparent;
@@ -60,9 +62,6 @@ if(!($user->is_in_cycle())){
 				letter-spacing: 2px;
 				font-size: 20px;
 			}
-			.cycle button: active{
-				box-shadow: 0px 0px 0px transparent;
-			}
 			.pop button{
 				border: none;
 				margin: 5px;
@@ -71,10 +70,14 @@ if(!($user->is_in_cycle())){
 				color: white;
 				box-shadow: 2px 3px 10px black;
 			}
+			.notification{
+				text-align: center;
+				margin: 30px;
+				font-size: 17px;
+			}
 		</style>
 </head>
 <body>
-
 <div class="wrapper">
     <div class="sidebar" data-color="purple" data-image="assets/img/sidebar-5.jpg">
 
@@ -137,10 +140,15 @@ if(!($user->is_in_cycle())){
             </div>
         </nav>
 
-        <div class="content">
+        <div class="content" ng-app="greatfunds" ng-controller="profilectrl">
             <div class="container-fluid">
                 <div class="row">
-									<?php if(!($user->is_in_cycle())){ ?>
+									<?php if($user->not_paired() && ($user->is_in_ph())){ ?>
+										<div class="notification">
+											Please Hold on, while our system is trying to pair you
+										</div>
+										<?php } ?>
+									<?php if(!($user->is_in_ph())){ ?>
 									<div class="cycle">
 										<form class="" action="profile.php" method="post">
 											<button type="submit" name="cycle">Recycle</button>
@@ -166,11 +174,7 @@ if(!($user->is_in_cycle())){
                                     </thead>
                                     <tbody>
                                         <tr>
-                                        	<td>kingcodex</td>
-                                        	<td>4544385783</td>
-                                        	<td>abang elshaddai samuel</td>
-                                        	<td>Diamond Bank</td>
-																					<td>08133995749</td>
+                                        	<td ng-repeat="user in prohelp">{{user}}</td>
                                         	<td>
 																						<form class="pop" action="profile.php" method="post">
 																						<input type="file" name="pop">
@@ -286,7 +290,7 @@ if(!($user->is_in_cycle())){
                     </ul>
                 </nav>
                 <p class="copyright pull-right">
-                    &copy; <script>document.write(new Date().getFullYear())</script> <a href="http://www.creative-tim.com">Creative Tim</a>, made with love for a better web
+                    &copy; <script>document.write(new Date().getFullYear())</script> <a href="http://www.greatfunds.com">Greatfunds</a>
                 </p>
             </div>
         </footer>
@@ -297,28 +301,12 @@ if(!($user->is_in_cycle())){
 
 
 </body>
-
     <!--   Core JS Files   -->
     <script src="assets/js/jquery-1.10.2.js" type="text/javascript"></script>
 	<script src="assets/js/bootstrap.min.js" type="text/javascript"></script>
 
-	<!--  Checkbox, Radio & Switch Plugins -->
-	<script src="assets/js/bootstrap-checkbox-radio-switch.js"></script>
-
-	<!--  Charts Plugin -->
-	<script src="assets/js/chartist.min.js"></script>
-
-    <!--  Notifications Plugin    -->
-    <script src="assets/js/bootstrap-notify.js"></script>
-
-    <!--  Google Maps Plugin    -->
-    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?sensor=false"></script>
-
-    <!-- Light Bootstrap Table Core javascript and methods for Demo purpose -->
-	<script src="assets/js/light-bootstrap-dashboard.js"></script>
-
-	<!-- Light Bootstrap Table DEMO methods, don't include it in your project! -->
-	<script src="assets/js/demo.js"></script>
+	<script src="js/myscript.js"></script>
+	<script src="js/app.js"></script>
 
 
 </html>

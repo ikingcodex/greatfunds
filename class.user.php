@@ -68,6 +68,52 @@
           return true;
         }
 
+        public function not_paired(){
+          try {
+            $select = $this->db->prepare("SELECT is_paired FROM prohelp WHERE username=:uname LIMIT 1");
+            $uname = $_SESSION['user_session'];
+            $select->execute(array(':uname'=>$uname));
+            $userRow = $select->fetch(PDO::FETCH_ASSOC);
+            if ($userRow['is_paired'] == 0){
+              return true;
+            }
+            else{
+              return false;
+            }
+          }catch (PDOException $e) {
+            echo $e->getMessage();
+          }
+
+        }
+        public function check(){
+            $uname = $_SESSION['user_session'];
+            if($this->not_paired()) {
+              $stmt = $this->db->prepare("SELECT username, num_of_pair FROM gethelp WHERE num_of_pair < 2 LIMIT 1");
+              $stmt->execute();
+              $Row = $stmt->fetch(PDO::FETCH_ASSOC);
+              if($stmt->rowCount() > 0){
+                $username = $Row['username'];
+                $newval = $Row['num_of_pair'] + 1;
+                $update = $this->db->prepare("UPDATE gethelp SET num_of_pair=:numofpair WHERE username=:username");
+                $update->bindparam(":username", $username);
+                $update->bindparam(":numofpair", $newval);
+                $update->execute();
+                $update = $this->db->prepare("UPDATE prohelp SET paired_with=:user,is_paired = 1 WHERE username=:username");
+                $update->bindparam(":user", $username);
+                $update->bindparam(":username", $uname);
+                $update->execute();
+                return;
+              }
+              else{
+                $this->retry();
+                return;
+              }
+          }
+        }
+        public function retry(){
+          echo "work";
+         }
+
         public function cycle(){
           try{
             $select = $this->db->prepare("SELECT username,phone_number,account_name,account_number,bank_name FROM users WHERE username=:uname LIMIT 1");
@@ -79,7 +125,6 @@
             $account_name = $userRow['account_name'];
             $account_number = $userRow['account_number'];
             $bank_name = $userRow['bank_name'];
-
             $insert = $this->db->prepare("INSERT INTO prohelp(username,phone_number,account_name,bank_name,account_number)
             VALUES(:username, :pnumber, :acc_name, :bank, :acc_number)");
             $insert->bindparam(":username", $username);
@@ -88,7 +133,7 @@
             $insert->bindparam(":acc_number", $account_number);
             $insert->bindparam(":bank", $bank_name);
             $insert->execute();
-            return true;
+            $this->check();
           }
           catch(PDOException $e){
                echo $e->getMessage();
