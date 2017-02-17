@@ -7,14 +7,14 @@ if(!($user->is_loggedin()))
 }
 if (isset($_POST["logout"])) {
 	if($user->logout()){
-		$user->redirect('index.php');
+		$user->redirect('login.php');
 	}
 }
-// if(!($user->is_in_cycle())){
+if(!($user->is_in_cycle())){
 	if (isset($_POST["cycle"])) {
 		$user->cycle();
 	}
-// }
+}
  ?>
 
 <!doctype html>
@@ -118,7 +118,13 @@ if (isset($_POST["logout"])) {
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand">Welcome!, click on <strong>Recycle</strong> to begin</a>
+										<?php
+										if(!($user->is_in_cycle())){
+											?>
+											<a class="navbar-brand">Welcome!, click on <strong>Recycle</strong> to begin</a>
+											<?php
+										}
+										?>
                 </div>
                 <div class="collapse navbar-collapse">
                     <ul class="nav navbar-nav navbar-right">
@@ -144,7 +150,7 @@ if (isset($_POST["logout"])) {
             <div class="container-fluid">
                 <div class="row">
 									<?php if($user->not_paired() && ($user->is_in_ph())){ ?>
-										<div class="notification">
+										<div class="notification" ng-hide="{{data}}">
 											Please Hold on, while our system is trying to pair you
 										</div>
 										<?php } ?>
@@ -173,10 +179,14 @@ if (isset($_POST["logout"])) {
 																			<th>Proof of payment</th>
                                     </thead>
                                     <tbody>
-                                        <tr>
-                                        	<td ng-repeat="user in prohelp">{{user}}</td>
-                                        	<td>
-																						<form class="pop" action="profile.php" method="post">
+                                        <tr ng-repeat="user in prohelp">
+                                        	<td>{{user.name}} </td>
+																					<td>{{user.number}}</td>
+																					<td>{{user.account_name}}</td>
+																					<td>{{user.bank_name}}</td>
+																					<td>{{user.phone_number}}</td>
+                                        	<td ng-show="{{data}}">
+																						<form class="pop" action="profile.php" method="post" onsubmit=" return validatepop();">
 																						<input type="file" name="pop">
 																						<button type="submit" name="pop_button">send</button>
                                         	</form>

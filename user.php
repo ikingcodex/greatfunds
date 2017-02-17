@@ -7,7 +7,7 @@ if(!($user->is_loggedin()))
 }
 if (isset($_POST["logout"])) {
 	if($user->logout()){
-		$user->redirect('index.php');
+		$user->redirect('login.php');
 	}
 }
 // $user->userid = $_SESSION['user_session'];
