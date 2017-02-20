@@ -86,33 +86,40 @@
 
         }
         public function check(){
-            $uname = $_SESSION['user_session'];
             if($this->not_paired()) {
-              $stmt = $this->db->prepare("SELECT username, num_of_pair FROM gethelp WHERE num_of_pair < 2 LIMIT 1");
+              $uname = $_SESSION['user_session'];
+              $stmt = $this->db->prepare("SELECT userid, username, num_of_pair FROM gethelp WHERE num_of_pair < 2 ORDER BY time ASC LIMIT 1");
               $stmt->execute();
               $Row = $stmt->fetch(PDO::FETCH_ASSOC);
               if($stmt->rowCount() > 0){
+                $userid= $Row['userid'];
                 $username = $Row['username'];
+                if ($Row['num_of_pair'] == 1) {
+                  $newval = $Row['num_of_pair'] + 1;
+                  $update = $this->db->prepare("UPDATE gethelp SET num_of_pair=:numofpair,is_paired=1 WHERE userid=:userid");
+                  $update->bindparam(":userid", $userid);
+                  $update->bindparam(":numofpair", $newval);
+                  $update->execute();
+                  $this->paired_user();
+                }
+                else{
                 $newval = $Row['num_of_pair'] + 1;
                 $update = $this->db->prepare("UPDATE gethelp SET num_of_pair=:numofpair WHERE username=:username");
                 $update->bindparam(":username", $username);
                 $update->bindparam(":numofpair", $newval);
                 $update->execute();
+                $this->paired_user();
+                }
                 $update = $this->db->prepare("UPDATE prohelp SET paired_with=:user,is_paired = 1 WHERE username=:username");
                 $update->bindparam(":user", $username);
                 $update->bindparam(":username", $uname);
                 $update->execute();
-                return;
-              }
-              else{
-                $this->retry();
-                return;
+                $this->paired_user();
+              }else{
+                $this->paired_user();
               }
           }
         }
-        public function retry(){
-          echo "work";
-         }
 
         public function cycle(){
           try{
@@ -178,12 +185,29 @@
         }
 
         public function is_in_cycle(){
-         if ($this->is_in_ph() || $this->is_in_gh()) {
-          return true;
-         }
-         else {
-           return false;
-         }
+           if ($this->is_in_ph() || $this->is_in_gh()) {
+            return true;
+           }
+           else {
+             return false;
+           }
+        }
+        public function paired_user(){
+          try {
+            $select = $this->db->prepare("SELECT paired_with FROM prohelp WHERE username=:uname LIMIT 1");
+            $uname = $_SESSION['user_session'];
+            $select->execute(array(':uname'=>$uname));
+            $userRow = $select->fetch(PDO::FETCH_ASSOC);
+            if ($userRow['paired_with'] != null || $userRow['paired_with'] != "" ){
+              return $userRow['paired_with'];
+            }
+            else{
+              return false;
+            }
+          }catch (PDOException $e) {
+            echo $e->getMessage();
+          }
+
         }
     }
 ?>

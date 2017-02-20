@@ -1,21 +1,26 @@
 <?php
-require_once 'class.db.php';
+	require_once 'class.db.php';
 
-if(!($user->is_loggedin()))
-{
-		$user->redirect('login.php');
-}
-if (isset($_POST["logout"])) {
-	if($user->logout()){
-		$user->redirect('login.php');
+	if(!($user->is_loggedin()))
+	{
+			$user->redirect('login.php');
 	}
-}
-if(!($user->is_in_cycle())){
-	if (isset($_POST["cycle"])) {
-		$user->cycle();
+	if (isset($_POST["logout"])) {
+		if($user->logout()){
+			$user->redirect('login.php');
+		}
 	}
-}
+	if(!($user->is_in_cycle())){
+		if (isset($_POST["cycle"])) {
+			$user->cycle();
+		}
+	}
+	if ($user->is_in_ph() && $user->not_paired()) {
+			$user->check();
+	}
+
  ?>
+
 
 <!doctype html>
 <html lang="en">
@@ -74,6 +79,12 @@ if(!($user->is_in_cycle())){
 				text-align: center;
 				margin: 30px;
 				font-size: 17px;
+			}
+			i.pe-7s-refresh-2{
+				font-size: 40px;
+				position: relative;
+				top: 10px;
+				left: 10px;
 			}
 		</style>
 </head>
@@ -150,11 +161,11 @@ if(!($user->is_in_cycle())){
             <div class="container-fluid">
                 <div class="row">
 									<?php if($user->not_paired() && ($user->is_in_ph())){ ?>
-										<div class="notification" ng-hide="{{data}}">
-											Please Hold on, while our system is trying to pair you
+										<div class="notification" ng-hide="{{field}}" id="demo">
+											Please Hold on, while our system is trying to pair you <i class="pe-7s-refresh-2"></i>
 										</div>
 										<?php } ?>
-									<?php if(!($user->is_in_ph())){ ?>
+									<?php if(!($user->is_in_cycle())){ ?>
 									<div class="cycle">
 										<form class="" action="profile.php" method="post">
 											<button type="submit" name="cycle">Recycle</button>
@@ -165,28 +176,28 @@ if(!($user->is_in_cycle())){
                     <div class="col-md-12">
                         <div class="card">
                             <div class="header">
-                                <h4 class="title">Pay To</h4>
-                                <p class="category">you have been paired with the folowing user, kindly pay to them and upload proof of payment to earn 100% profit.</p>
+                                <h4 class="title">Pay To {{paired_user}}</h4>
+                                <p class="category"> have been paired with the folowing user, kindly pay to them and upload proof of payment to earn 100% profit.</p>
                             </div>
                             <div class="content table-responsive table-full-width">
                                 <table class="table table-hover table-striped">
                                     <thead>
-                                      <th>UserName</th>
-                                    	<th>Account Number</th>
+                                      <th>Username</th>
+																			<th>Phone number</th>
                                     	<th>Account Name</th>
                                     	<th>Bank</th>
-                                    	<th>Phone number</th>
+																			<th>Account Number</th>
 																			<th>Proof of payment</th>
                                     </thead>
                                     <tbody>
                                         <tr ng-repeat="user in prohelp">
                                         	<td>{{user.name}} </td>
-																					<td>{{user.number}}</td>
+																					<td>{{user.phone_number}}</td>
 																					<td>{{user.account_name}}</td>
 																					<td>{{user.bank_name}}</td>
-																					<td>{{user.phone_number}}</td>
-                                        	<td ng-show="{{data}}">
-																						<form class="pop" action="profile.php" method="post" onsubmit=" return validatepop();">
+																					<td>{{user.number}}</td>
+                                        	<td ng-show="{{field}}">
+																						<form class="pop" action="profile.php" method="post" onsubmit=" return $scope.test();">
 																						<input type="file" name="pop">
 																						<button type="submit" name="pop_button">send</button>
                                         	</form>
@@ -201,8 +212,8 @@ if(!($user->is_in_cycle())){
 
 										<?php } ?>
 
-
-                    <!-- <div class="col-md-12">
+										<?php if($user->is_in_gh()){ ?>
+                    <div class="col-md-12">
                         <div class="card card-plain">
                             <div class="header">
                                 <h4 class="title">Payed By</h4>
@@ -219,54 +230,26 @@ if(!($user->is_in_cycle())){
 																			<th>confirmation</th>
                                     </thead>
                                     <tbody>
-                                        <tr>
-                                        	<td>1</td>
-                                        	<td>Dakota Rice</td>
-                                        	<td>$36,738</td>
-                                        	<td>Niger</td>
-                                        	<td>Oud-Turnhout</td>
-                                        </tr>
-                                        <tr>
-                                        	<td>2</td>
-                                        	<td>Minerva Hooper</td>
-                                        	<td>$23,789</td>
-                                        	<td>Curaçao</td>
-                                        	<td>Sinaai-Waas</td>
-                                        </tr>
-                                        <tr>
-                                        	<td>3</td>
-                                        	<td>Sage Rodriguez</td>
-                                        	<td>$56,142</td>
-                                        	<td>Netherlands</td>
-                                        	<td>Baileux</td>
-                                        </tr>
-                                        <tr>
-                                        	<td>4</td>
-                                        	<td>Philip Chaney</td>
-                                        	<td>$38,735</td>
-                                        	<td>Korea, South</td>
-                                        	<td>Overland Park</td>
-                                        </tr>
-                                        <tr>
-                                        	<td>5</td>
-                                        	<td>Doris Greene</td>
-                                        	<td>$63,542</td>
-                                        	<td>Malawi</td>
-                                        	<td>Feldkirchen in Kärnten</td>
-                                        </tr>
-                                        <tr>
-                                        	<td>6</td>
-                                        	<td>Mason Porter</td>
-                                        	<td>$78,615</td>
-                                        	<td>Chile</td>
-                                        	<td>Gloucester</td>
-                                        </tr>
+																			<tr ng-repeat="user in prohelp">
+																				<td>{{user.name}} </td>
+																				<td>{{user.phone_number}}</td>
+																				<td>{{user.account_name}}</td>
+																				<td>{{user.bank_name}}</td>
+																				<td>{{user.number}}</td>
+																				<td ng-show="{{field}}">
+																					<form class="pop" action="profile.php" method="post" onsubmit=" return $scope.test();">
+																					<input type="file" name="pop">
+																					<button type="submit" name="pop_button">send</button>
+																				</form>
+																			</td>
+																			</tr>
                                     </tbody>
                                 </table>
 
                             </div>
                         </div>
-                    </div> -->
+                    </div>
+										<?php } ?>
 
 
                 </div>
@@ -315,7 +298,7 @@ if(!($user->is_in_cycle())){
     <script src="assets/js/jquery-1.10.2.js" type="text/javascript"></script>
 	<script src="assets/js/bootstrap.min.js" type="text/javascript"></script>
 
-	<script src="js/myscript.js"></script>
+	<!-- <script src="js/myscript.js"></script> -->
 	<script src="js/app.js"></script>
 
 
