@@ -173,7 +173,7 @@
 									</div>
 									<?php } ?>
 								<?php if($user->is_in_ph()){ ?>
-                    <div class="col-md-12">
+                    <div class="col-md-12" id="ph-table">
                         <div class="card">
                             <div class="header">
                                 <h4 class="title">Pay To {{paired_user}}</h4>

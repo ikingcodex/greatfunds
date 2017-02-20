@@ -25,7 +25,7 @@ if($user->is_loggedin()){
         $output .= '{"name":"' .$userRow["username"] . '","phone_number":"' .$userRow["phone_number"] . '","account_name":"' .$userRow["account_name"] . '",';
         $output .= '"bank_name":"' .$userRow["bank_name"] . '",';
         $output .= '"number":"' .$userRow["account_number"] . '"}';
-        $output = '{"user":['.$output.']}' ;
+        $output = '{"paired_user_info":['.$output.']}' ;
 
         echo $output;
         break;
