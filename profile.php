@@ -238,8 +238,7 @@
 																				<td>{{user.number}}</td>
 																				<td ng-show="{{field}}">
 																					<form class="pop" action="profile.php" method="post" onsubmit=" return $scope.test();">
-																					<input type="file" name="pop">
-																					<button type="submit" name="pop_button">send</button>
+																					<button type="submit" name="confirm">confirm</button>
 																				</form>
 																			</td>
 																			</tr>

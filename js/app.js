@@ -1,5 +1,5 @@
 var app = angular.module('greatfunds', []);
-app.controller('profilectrl', function($scope,$http,$interval,$window) {
+app.controller('profilectrl', function($scope,$http,$interval,$timeout) {
   $scope.prohelp = [];
   $scope.gethelp = [];
   $scope.paired_user = {};
@@ -35,7 +35,7 @@ app.controller('profilectrl', function($scope,$http,$interval,$window) {
          });
       }
       else{
-        $interval(check , 20000);
+        $interval(check , 5000);
 
       }
     });
@@ -46,6 +46,11 @@ app.controller('profilectrl', function($scope,$http,$interval,$window) {
         url: './api/api.php?view=users'
     }).then(function successCallback(response){
       $scope.gethelp = response.data.users;
+      $scope.field = true
+      if ($scope.gethelp.length == 1) {
+          $timeout(get, 5000);
+          console.log("check")
+      }
     });
   }
 
@@ -62,4 +67,5 @@ app.controller('profilectrl', function($scope,$http,$interval,$window) {
           }
       });
     }
+    
 });
