@@ -13,7 +13,8 @@ if($user->is_loggedin()){
         $outp ='{"paired_user":"'.$outp.'"}';
         echo $outp;
         break;
-
+      case 'users':
+      break;
       case $outp:
         header("Access-Control-Allow-Origin: *");
         header("Content-Type: application/json; charset=UTF-8");

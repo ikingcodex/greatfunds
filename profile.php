@@ -213,7 +213,7 @@
 										<?php } ?>
 
 										<?php if($user->is_in_gh()){ ?>
-                    <div class="col-md-12">
+                    <div class="col-md-12" id="gh-table">
                         <div class="card card-plain">
                             <div class="header">
                                 <h4 class="title">Payed By</h4>
@@ -230,7 +230,7 @@
 																			<th>confirmation</th>
                                     </thead>
                                     <tbody>
-																			<tr ng-repeat="user in prohelp">
+																			<tr ng-repeat="user in gethelp">
 																				<td>{{user.name}} </td>
 																				<td>{{user.phone_number}}</td>
 																				<td>{{user.account_name}}</td>
