@@ -1,11 +1,12 @@
 var app = angular.module('greatfunds', []);
-app.controller('profilectrl', function($scope,$http,$interval,$timeout) {
+app.controller('profilectrl', function($scope,$http,$timeout,$interval) {
   $scope.prohelp = [];
   $scope.gethelp = [];
   $scope.paired_user = {};
   $scope.field = false;
   var ph = document.getElementById('ph-table');
   var gh = document.getElementById('gh-table');
+
   if (ph != null && ph != ""){
       show();
   }
@@ -27,16 +28,16 @@ app.controller('profilectrl', function($scope,$http,$interval,$timeout) {
 
            $scope.prohelp = response.data.paired_user_info;
            $scope.field = true;
+           $scope.interval = $interval(timer ,1000);
            var demo = document.getElementById('demo');
            if (demo != null && demo != "") {
              demo.innerHTML = $scope.paired_user+" has been paired with you";
-             $interval.cancel(check);
            }
          });
       }
       else{
-        $interval(check , 5000);
-
+          $scope.field = false;
+           $timeout(check , 5000);
       }
     });
   }
@@ -47,25 +48,38 @@ app.controller('profilectrl', function($scope,$http,$interval,$timeout) {
     }).then(function successCallback(response){
       $scope.gethelp = response.data.users;
       $scope.field = true
-      if ($scope.gethelp.length == 1) {
+      if ($scope.gethelp.length < 2) {
           $timeout(get, 5000);
-          console.log("check")
       }
     });
   }
 
 
   function check(){
+    console.log("check");
     $http({
           method: 'GET',
           url: './api/api.php?view=check',
       }).then(function successCallback(response){
-          console.log("Check function");
           $scope.paired_user = response.data;
           if ($scope.paired_user != {} && $scope.paired_user != "") {
             show();
           }
       });
     }
-    
+
+  function timer() {
+    $http({
+          method: 'GET',
+          url: './api/api.php?view=timer',
+      }).then(function successCallback(response){
+          document.getElementById('timer').innerHTML = "Time Left - "+response.data.timer;
+          if (response.data.timer == "00:00:00") {
+            console.log("done");
+            document.getElementById('timer').innerHTML = "TIME-UP!";
+            $interval.cancel($scope.interval);
+          }
+      });
+  }
+
 });

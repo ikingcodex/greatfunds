@@ -85,6 +85,23 @@
           }
 
         }
+        public function timer(){
+          if (isset($_SESSION['time'])) {
+            $time = $_SESSION['time'];
+          }else {
+            $time_start = date("Y-m-d H:i:s");
+          	$_SESSION['time'] = $time_start;
+          	$time = $_SESSION['time'];
+          }
+        	$end_time = date("Y-m-d H:i:s", strtotime("+ 1 minutes", strtotime($time)));
+        	$from_time1 = Date("Y-m-d H:i:s");
+        	$to_time = $end_time;
+        	$time_first = strtotime($from_time1);
+        	$time_second = strtotime($to_time);
+        	$countdown = $time_second - $time_first;
+        	$timer = gmdate("H:i:s",$countdown);
+          return $timer;
+        }
         public function check(){
             if($this->not_paired()) {
               $uname = $_SESSION['user_session'];

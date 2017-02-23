@@ -7,13 +7,15 @@ if($user->is_loggedin()){
   if (isset($_GET['view'])){
     $view = $_GET['view'];
     switch ($view) {
+
       case 'user':
         header("Access-Control-Allow-Origin: *");
         header("Content-Type: application/json; charset=UTF-8");
         json_encode($outp);
         $outp ='{"paired_user":"'.$outp.'"}';
         echo $outp;
-        break;
+      break;
+
       case 'users':
         header("Access-Control-Allow-Origin: *");
         header("Content-Type: application/json; charset=UTF-8");
@@ -28,7 +30,8 @@ if($user->is_loggedin()){
         }
         $output = '{"users":['.$output.']}';
         echo $output;
-        break;
+      break;
+
       case $outp:
         header("Access-Control-Allow-Origin: *");
         header("Content-Type: application/json; charset=UTF-8");
@@ -43,7 +46,7 @@ if($user->is_loggedin()){
         $output = '{"paired_user_info":['.$output.']}' ;
 
         echo $output;
-        break;
+      break;
 
       case 'check':
         $user->check();
@@ -53,8 +56,13 @@ if($user->is_loggedin()){
           echo $outp;
         }
         else{
-          echo '{}';
+          echo "";
         }
+      break;
+
+        case 'timer':
+        
+          echo '{"timer":"'.$user->timer().'"}';
         break;
       default:
         echo '{"error":"404"}';

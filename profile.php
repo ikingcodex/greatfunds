@@ -86,6 +86,11 @@
 				top: 10px;
 				left: 10px;
 			}
+			.timer-content{
+				text-align: center;
+				font-size: 20px;
+				padding: 30px;
+			}
 		</style>
 </head>
 <body>
@@ -173,6 +178,9 @@
 									</div>
 									<?php } ?>
 								<?php if($user->is_in_ph()){ ?>
+									<div class="timer-content" id="timer">
+									</div>
+
                     <div class="col-md-12" id="ph-table">
                         <div class="card">
                             <div class="header">
