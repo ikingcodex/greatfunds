@@ -60,13 +60,13 @@ if($user->is_loggedin()){
         }
       break;
 
-        case 'timer':
-        
-          echo '{"timer":"'.$user->timer().'"}';
-        break;
+      case 'timer':
+        echo '{"timer":"'.$user->start_timer().'"}';
+      break;
+
       default:
         echo '{"error":"404"}';
-        break;
+      break;
     }
   }
   else {

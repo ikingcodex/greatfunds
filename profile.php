@@ -15,6 +15,7 @@
 			$user->cycle();
 		}
 	}
+
 	if ($user->is_in_ph() && $user->not_paired()) {
 			$user->check();
 	}
@@ -98,8 +99,7 @@
     <div class="sidebar" data-color="purple" data-image="assets/img/sidebar-5.jpg">
 
     <!--   you can change the color of the sidebar using: data-color="blue | azure | green | orange | red | purple" -->
-
-
+<?php if(!($user->is_blocked())){ ?>
     	<div class="sidebar-wrapper">
             <div class="logo">
                 <a class="simple-text">
@@ -122,6 +122,7 @@
                 </li>
             </ul>
     	</div>
+		<?php } ?>
     </div>
 
     <div class="main-panel">
@@ -135,7 +136,7 @@
                         <span class="icon-bar"></span>
                     </button>
 										<?php
-										if(!($user->is_in_cycle())){
+										if(!($user->is_in_cycle() || $user->is_blocked())){
 											?>
 											<a class="navbar-brand">Welcome!, click on <strong>Recycle</strong> to begin</a>
 											<?php
@@ -170,7 +171,7 @@
 											Please Hold on, while our system is trying to pair you <i class="pe-7s-refresh-2"></i>
 										</div>
 										<?php } ?>
-									<?php if(!($user->is_in_cycle())){ ?>
+									<?php if(!($user->is_in_cycle() || $user->is_blocked())){ ?>
 									<div class="cycle">
 										<form class="" action="profile.php" method="post">
 											<button type="submit" name="cycle">Recycle</button>

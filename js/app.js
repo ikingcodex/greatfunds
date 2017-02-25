@@ -21,6 +21,7 @@ app.controller('profilectrl', function($scope,$http,$timeout,$interval) {
 
       $scope.paired_user = response.data.paired_user;
       if ($scope.paired_user != {} && $scope.paired_user != "") {
+          $interval.cancel($scope.checkt);
          $http({
              method: 'GET',
              url: './api/api.php?view='+$scope.paired_user
@@ -37,7 +38,7 @@ app.controller('profilectrl', function($scope,$http,$timeout,$interval) {
       }
       else{
           $scope.field = false;
-           $timeout(check , 5000);
+           $scope.checkt = $interval(check , 5000);
       }
     });
   }
@@ -74,11 +75,11 @@ app.controller('profilectrl', function($scope,$http,$timeout,$interval) {
           url: './api/api.php?view=timer',
       }).then(function successCallback(response){
           document.getElementById('timer').innerHTML = "Time Left - "+response.data.timer;
-          if (response.data.timer == "00:00:00") {
-            console.log("done");
-            document.getElementById('timer').innerHTML = "TIME-UP!";
-            $interval.cancel($scope.interval);
-          }
+          // if (response.data.timer == "00:00:00") {
+            // console.log("done");
+            // document.getElementById('timer').innerHTML = "TIME-UP!";
+            // $interval.cancel($scope.interval);
+          // }
       });
   }
 

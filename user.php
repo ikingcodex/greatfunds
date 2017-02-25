@@ -10,6 +10,9 @@ if (isset($_POST["logout"])) {
 		$user->redirect('login.php');
 	}
 }
+if ($user->is_blocked()) {
+	$user->redirect('index.php');
+}
 // $user->userid = $_SESSION['user_session'];
  ?>
 <!doctype html>
