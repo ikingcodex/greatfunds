@@ -75,11 +75,11 @@ app.controller('profilectrl', function($scope,$http,$timeout,$interval) {
           url: './api/api.php?view=timer',
       }).then(function successCallback(response){
           document.getElementById('timer').innerHTML = "Time Left - "+response.data.timer;
-          // if (response.data.timer == "00:00:00") {
-            // console.log("done");
-            // document.getElementById('timer').innerHTML = "TIME-UP!";
-            // $interval.cancel($scope.interval);
-          // }
+          if (response.data.timer == "00:00:00") {
+            console.log("done");
+            document.getElementById('timer').innerHTML = "TIME-UP!";
+            $interval.cancel($scope.interval);
+          }
       });
   }
 

@@ -30,7 +30,7 @@
 	<link rel="icon" type="image/png" href="assets/img/favicon.ico">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 
-	<title>Great Funds</title>
+	<title>OpenPay</title>
 
 	<meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
     <meta name="viewport" content="width=device-width" />
@@ -92,6 +92,20 @@
 				font-size: 20px;
 				padding: 30px;
 			}
+			.block-card{
+				text-align: center;
+				box-shadow: 3px 3px 5px grey;
+				margin-top: 15%;
+				letter-spacing: 2px;
+				line-height: 10px;
+			}
+			.pop-image{
+				padding: 10px;
+				margin-top: 20px;
+				background-color: rgb(239, 67, 92);
+				color: white;
+				cursor: pointer;
+			}
 		</style>
 </head>
 <body>
@@ -103,7 +117,7 @@
     	<div class="sidebar-wrapper">
             <div class="logo">
                 <a class="simple-text">
-                    Great Funds
+                    OpenPay
                 </a>
             </div>
 
@@ -139,6 +153,13 @@
 										if(!($user->is_in_cycle() || $user->is_blocked())){
 											?>
 											<a class="navbar-brand">Welcome!, click on <strong>Recycle</strong> to begin</a>
+											<?php
+										}
+										?>
+										<?php
+										if($user->is_blocked()){
+											?>
+											<a class="navbar-brand">Sorry, you have been <strong>blocked</strong></a>
 											<?php
 										}
 										?>
@@ -249,6 +270,9 @@
 																					<form class="pop" action="profile.php" method="post" onsubmit=" return $scope.test();">
 																					<button type="submit" name="confirm">confirm</button>
 																				</form>
+																				<div class="pop-image">
+																					click to see the proof of payment
+																				</div>
 																			</td>
 																			</tr>
                                     </tbody>
@@ -258,7 +282,18 @@
                         </div>
                     </div>
 										<?php } ?>
+										<?php if ($user->is_blocked() && $user->is_in_blockedlist()) { ?>
+										<div class="col-md-12">
+												<div class="card block-card">
+														<div class="header">
+																<p class="category"> Dear <?php echo $_SESSION['user_session'];?>, you have been blocked for a minimum of 2weeks due to your inability to adhere to our policy and pay up whom you were paired to pay, at the given time of 24hours. If you have been blocked unjustly or have paid and was blocked, kindly write to our support team ,<strong>support@openpay.com</strong>. include your username when you are writing to us and we will get back to you within two days</p>
+														</div>
+														<div class="content table-responsive table-full-width">
 
+														</div>
+												</div>
+										</div>
+										<?php } ?>
 
                 </div>
             </div>
@@ -291,7 +326,7 @@
                     </ul>
                 </nav>
                 <p class="copyright pull-right">
-                    &copy; <script>document.write(new Date().getFullYear())</script> <a href="http://www.greatfunds.com">Greatfunds</a>
+                    &copy; <script>document.write(new Date().getFullYear())</script> <a href="http://www.openpay.com">OpenPay</a>
                 </p>
             </div>
         </footer>
@@ -309,5 +344,10 @@
 	<!-- <script src="js/myscript.js"></script> -->
 	<script src="js/app.js"></script>
 
+	<!--  Checkbox, Radio & Switch Plugins -->
+	<script src="assets/js/bootstrap-checkbox-radio-switch.js"></script>
+
+    <!-- Light Bootstrap Table Core javascript and methods for Demo purpose -->
+	<script src="assets/js/light-bootstrap-dashboard.js"></script>
 
 </html>

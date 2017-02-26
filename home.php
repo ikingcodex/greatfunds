@@ -15,7 +15,7 @@ if($user->is_loggedin())
       <meta name="viewport" content="width=device-width, initial-scale=1">
       <meta name="description" content="">
       <meta name="author" content="">
-      <title>Great Funds - Make 100% Profit</title>
+      <title>OpenPay - Make 100% Profit</title>
 
       <!-- Bootstrap Core CSS -->
       <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -51,7 +51,7 @@ if($user->is_loggedin())
                   <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
                       <span class="sr-only">Toggle navigation</span> Menu <i class="fa fa-bars"></i>
                   </button>
-                  <a class="navbar-brand page-scroll" href="#page-top">Great Funds</a>
+                  <a class="navbar-brand page-scroll" href="#page-top">OpenPay Investments</a>
               </div>
 
               <!-- Collect the nav links, forms, and other content for toggling -->
@@ -88,7 +88,7 @@ if($user->is_loggedin())
                   <div class="col-sm-7">
                       <div class="header-content">
                           <div class="header-content-inner">
-                              <h1>Want to make 100% profit on investment?, join <strong>Great Funds</strong>. The online platform that gives you 100% profit on investment.</h1>
+                              <h1>Want to make 100% profit on investment?, join <strong>OpenPay Investments</strong>. The online platform that gives you 100% profit on investment.</h1>
                               <a href="./signup.php" class="btn btn-outline btn-xl page-scroll">Start Making Money Now for Free!</a>
                           </div>
                       </div>
@@ -129,7 +129,7 @@ if($user->is_loggedin())
                   <div class="col-lg-12 text-center">
                       <div class="section-heading">
                           <h2>How to use?, Easy!</h2>
-                          <p class="text-muted">Team <strong>Great Funds</strong> makes it easy for you to make money in just 4 easy steps.</p>
+                          <p class="text-muted">Team <strong>OpenPay</strong> makes it easy for you to make money in just 4 easy steps.</p>
                           <hr>
                       </div>
                   </div>
@@ -163,7 +163,7 @@ if($user->is_loggedin())
                                   <div class="feature-item">
                                       <i class="icon-screen-smartphone text-primary"></i>
                                       <h3>Cycle</h3>
-                                      <p class="text-muted">Once you've registered click on the recycle button in your profile page to be paired with another <strong>Great fund</strong> user just like yourself!, whom you will pay ₦25,000.</p>
+                                      <p class="text-muted">Once you've registered click on the recycle button in your profile page to be paired with another <strong>OpenPay</strong> user just like yourself!, whom you will pay ₦25,000.</p>
                                   </div>
                               </div>
                           </div>
@@ -217,7 +217,7 @@ if($user->is_loggedin())
 
       <footer>
           <div class="container">
-              <p>&copy; 2016 Great Funds. All Rights Reserved.</p>
+              <p>&copy; 2017 OpenPay. All Rights Reserved.</p>
               <ul class="list-inline">
                   <li>
                       <a href="#">Privacy</a>

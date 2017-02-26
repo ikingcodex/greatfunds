@@ -1,7 +1,7 @@
 <?php
 
   require_once 'class.db.php';
-  
+
   if($user->is_loggedin())
   {
       $user->redirect('index.php');
@@ -70,7 +70,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-  <title>Great Funds - Signup</title>
+  <title>OpenPay - Signup</title>
 
   <!-- Stylesheets -->
   <link rel="stylesheet" href="css/style.css">
@@ -93,7 +93,7 @@
               <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
                   <span class="sr-only">Toggle navigation</span> Menu <i class="fa fa-bars"></i>
               </button>
-              <a class="navbar-brand page-scroll" href="index.php">Great Funds</a>
+              <a class="navbar-brand page-scroll" href="index.php">OpenPay</a>
           </div>
 
           <!-- Collect the nav links, forms, and other content for toggling -->
