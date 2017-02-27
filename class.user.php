@@ -87,32 +87,36 @@
       }
 
       public function start_timer(){
-        if (isset($_SESSION['time'])) {
-          $time = $_SESSION['time'];
+        if (!($this->has_pop())) {
+          if (isset($_SESSION['time'])) {
+            $time = $_SESSION['time'];
+          }else {
+            // $uname = $_SESSION['user_session'];
+            // $stmt = $this->db->prepare("SELECT paired_time FROM prohelp WHERE username =:user");
+            // $stmt->bindparam(":user", $uname);
+            // $stmt->execute();
+            // $Row = $stmt->fetch(PDO::FETCH_ASSOC);
+            // $time_start = date("Y-m-d H:i:s",strtotime($Row['paired_time']));
+            $time_start = date("Y-m-d H:i:s");
+          	$_SESSION['time'] = $time_start;
+          	$time = $_SESSION['time'];
+          }
+        	$end_time = date("Y-m-d H:i:s", strtotime("+ 2 minutes", strtotime($time)));
+        	$from_time1 = Date("Y-m-d H:i:s");
+        	$to_time = $end_time;
+        	$time_first = strtotime($from_time1);
+        	$time_second = strtotime($to_time);
+        	$countdown = $time_second - $time_first;
+        	$timer = gmdate("H:i:s",$countdown);
+          if (date("Y-m-d H:i:s") >= $end_time) {
+            $this->c_block_user();
+            return "done";
+          }
+          else{
+            return $timer;
+          }
         }else {
-          // $uname = $_SESSION['user_session'];
-          // $stmt = $this->db->prepare("SELECT paired_time FROM prohelp WHERE username =:user");
-          // $stmt->bindparam(":user", $uname);
-          // $stmt->execute();
-          // $Row = $stmt->fetch(PDO::FETCH_ASSOC);
-          // $time_start = date("Y-m-d H:i:s",strtotime($Row['paired_time']));
-          $time_start = date("Y-m-d H:i:s");
-        	$_SESSION['time'] = $time_start;
-        	$time = $_SESSION['time'];
-        }
-      	$end_time = date("Y-m-d H:i:s", strtotime("+ 2 minutes", strtotime($time)));
-      	$from_time1 = Date("Y-m-d H:i:s");
-      	$to_time = $end_time;
-      	$time_first = strtotime($from_time1);
-      	$time_second = strtotime($to_time);
-      	$countdown = $time_second - $time_first;
-      	$timer = gmdate("H:i:s",$countdown);
-        if (date("Y-m-d H:i:s") >= $end_time) {
-          $this->c_block_user();
-          return "done";
-        }
-        else{
-          return $timer;
+          return "Timer Stopped";
         }
       }
 
@@ -330,6 +334,92 @@
             }
           }
         catch(PDOException $e){
+          echo $e->getMessage();
+        }
+      }
+
+      public function upload_pop($iname,$itmp,$isize){
+        $upload_dir = "uploads/";
+        if (empty($iname)) {
+    			echo "Please insert image";
+    		}
+    		else {
+    			$imgExt = strtolower(pathinfo($iname,PATHINFO_EXTENSION));
+    			$allowExt = array('jpeg','jpg','png','gif');
+    			$userPic = time().'_'.rand(1000,9999).'.'.$imgExt;
+    			if (in_array($imgExt,$allowExt)) {
+    				if ($isize < 50000000) {
+    					move_uploaded_file($itmp,$upload_dir.$userPic);
+              try{
+                $stmt = $this->db->prepare("UPDATE prohelp SET pop =:pop WHERE username =:username");
+                $username = $_SESSION['user_session'];
+                $stmt->bindparam(":username", $username);
+                $stmt->bindparam(":pop", $userPic);
+                $stmt->execute();
+                return $stmt;
+              }
+              catch(PDOException $e){
+                echo $e->getMessage();
+              }
+    				}
+    				else{
+    					echo "image too large";
+    				}
+    			}
+    			else {
+    				echo "please enter a valide image";
+    			}
+    		}
+      }
+
+      public function has_pop(){
+        try{
+          $uname = $_SESSION['user_session'];
+          $user = $this->db->prepare("SELECT pop FROM prohelp WHERE username=:uname");
+          $user->execute(array(':uname'=>$uname));
+          $Row = $user->fetch(PDO::FETCH_ASSOC);
+
+          if($Row['pop'] != "" || $Row['pop'] != null){
+              return true;
+          }
+            else{
+              return false;
+            }
+          }
+        catch(PDOException $e){
+          echo $e->getMessage();
+        }
+      }
+      public function confirm($user){
+        try {
+          $uname = $_SESSION['user_session'];
+          $delete = $this->db->prepare("DELETE FROM prohelp WHERE username =:user");
+          $delete->bindparam(":user", $user);
+          $delete->execute();
+          $insert = $this->db->prepare("INSERT INTO gethelp(username) VALUES(:username)");
+          $insert->bindparam(":username", $user);
+          $insert->execute();
+          $select = $this->db->prepare("SELECT * FROM gethelp WHERE username=:uname");
+          $select->execute(array(':uname'=>$user));
+          if ($select->rowCount() > 0) {
+            $select = $this->db->prepare("SELECT is_confirmed FROM gethelp WHERE username=:username");
+            $select->bindparam(":username", $uname);
+            $select->execute();
+            $Row = $select->fetch(PDO::FETCH_ASSOC);
+            if ($Row['is_confirmed'] == 1) {
+              $delete = $this->db->prepare("DELETE FROM gethelp WHERE username =:user");
+              $delete->bindparam(":user", $uname);
+              $delete->execute();
+            }
+            else {
+              $newval = $Row['is_confirmed'] + 1;
+              $update = $this->db->prepare("UPDATE gethelp SET is_confirmed =:val WHERE username =:username");
+              $update->bindparam(":val", $newval);
+              $update->bindparam(":username", $uname);
+              $update->execute();
+            }
+          }
+        } catch (PDOException $e) {
           echo $e->getMessage();
         }
       }

@@ -49,9 +49,8 @@ app.controller('profilectrl', function($scope,$http,$timeout,$interval) {
     }).then(function successCallback(response){
       $scope.gethelp = response.data.users;
       $scope.field = true
-      if ($scope.gethelp.length < 2) {
-          $timeout(get, 5000);
-      }
+      $timeout(get, 5000);
+
     });
   }
 
@@ -75,9 +74,11 @@ app.controller('profilectrl', function($scope,$http,$timeout,$interval) {
           url: './api/api.php?view=timer',
       }).then(function successCallback(response){
           document.getElementById('timer').innerHTML = "Time Left - "+response.data.timer;
-          if (response.data.timer == "00:00:00") {
-            console.log("done");
-            document.getElementById('timer').innerHTML = "TIME-UP!";
+          if (response.data.timer == "done") {
+            $interval.cancel($scope.interval);
+            window.location = "http://localhost/greatfunds/"
+          }
+          else if (response.data.timer == "Timer Stopped") {
             $interval.cancel($scope.interval);
           }
       });

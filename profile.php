@@ -10,7 +10,12 @@
 			$user->redirect('login.php');
 		}
 	}
-	if(!($user->is_in_cycle())){
+	if($user->is_in_cycle()){
+		if (isset($_POST["cycle"])) {
+			return false;
+		}
+	}
+	else {
 		if (isset($_POST["cycle"])) {
 			$user->cycle();
 		}
@@ -18,6 +23,17 @@
 
 	if ($user->is_in_ph() && $user->not_paired()) {
 			$user->check();
+	}
+
+	if (isset($_POST["pop_button"])) {
+		$imgName = $_FILES["pop"]["name"];
+		$imgTmp = $_FILES["pop"]["tmp_name"];
+		$imgSize = $_FILES["pop"]["size"];
+		$user->upload_pop($imgName,$imgTmp,$imgSize);
+	}
+	if (isset($_POST["confirm"])) {
+      $name = $_POST["confirm"];
+		$user->confirm($name);
 	}
 
  ?>
@@ -95,9 +111,11 @@
 			.block-card{
 				text-align: center;
 				box-shadow: 3px 3px 5px grey;
-				margin-top: 15%;
+				margin-top: 9%;
 				letter-spacing: 2px;
-				line-height: 10px;
+			}
+			.block-card .category{
+				line-height: 30px;
 			}
 			.pop-image{
 				padding: 10px;
@@ -105,15 +123,17 @@
 				background-color: rgb(239, 67, 92);
 				color: white;
 				cursor: pointer;
+				width: 120px;
+				text-align: center
 			}
 		</style>
 </head>
 <body>
 <div class="wrapper">
+	<?php if(!($user->is_blocked())){ ?>
     <div class="sidebar" data-color="purple" data-image="assets/img/sidebar-5.jpg">
 
     <!--   you can change the color of the sidebar using: data-color="blue | azure | green | orange | red | purple" -->
-<?php if(!($user->is_blocked())){ ?>
     	<div class="sidebar-wrapper">
             <div class="logo">
                 <a class="simple-text">
@@ -136,10 +156,10 @@
                 </li>
             </ul>
     	</div>
-		<?php } ?>
     </div>
+		<?php } ?>
 
-    <div class="main-panel">
+    <div class="main-panel" style="width:<?php if($user->is_blocked()){echo "100%" ;} ?>">
 		<nav class="navbar navbar-default navbar-fixed">
             <div class="container-fluid">
                 <div class="navbar-header">
@@ -227,7 +247,7 @@
 																					<td>{{user.bank_name}}</td>
 																					<td>{{user.number}}</td>
                                         	<td ng-show="{{field}}">
-																						<form class="pop" action="profile.php" method="post" onsubmit=" return $scope.test();">
+																						<form class="pop" action="profile.php" enctype="multipart/form-data" method="post" onsubmit=" return $scope.test();">
 																						<input type="file" name="pop">
 																						<button type="submit" name="pop_button">send</button>
                                         	</form>
@@ -253,10 +273,10 @@
                                 <table class="table table-hover">
                                     <thead>
 																			<th>UserName</th>
+																			<th>Phone number</th>
+																			<th>Account Name</th>
+																			<th>Bank</th>
                                     	<th>Account Number</th>
-                                    	<th>Account Name</th>
-                                    	<th>Bank</th>
-                                    	<th>Phone number</th>
 																			<th>confirmation</th>
                                     </thead>
                                     <tbody>
@@ -267,11 +287,11 @@
 																				<td>{{user.bank_name}}</td>
 																				<td>{{user.number}}</td>
 																				<td ng-show="{{field}}">
-																					<form class="pop" action="profile.php" method="post" onsubmit=" return $scope.test();">
-																					<button type="submit" name="confirm">confirm</button>
+																					<form class="pop" action="profile.php" method="post">
+																					<button type="submit" name="confirm" value="{{user.name}}">Confirm</button>
 																				</form>
-																				<div class="pop-image">
-																					click to see the proof of payment
+																				<div class="pop-image" ng-show="{{user.pop}}">
+																					View P.O.P <i class="pe-7s-news-paper"></i>
 																				</div>
 																			</td>
 																			</tr>
@@ -286,7 +306,7 @@
 										<div class="col-md-12">
 												<div class="card block-card">
 														<div class="header">
-																<p class="category"> Dear <?php echo $_SESSION['user_session'];?>, you have been blocked for a minimum of 2weeks due to your inability to adhere to our policy and pay up whom you were paired to pay, at the given time of 24hours. If you have been blocked unjustly or have paid and was blocked, kindly write to our support team ,<strong>support@openpay.com</strong>. include your username when you are writing to us and we will get back to you within two days</p>
+																<p class="category"> Dear <?php echo $_SESSION['user_session'];?>, you have been blocked for a minimum of 2weeks due to your inability to adhere to our policy and pay up whom you were paired to pay, at the given time of 24hours. Due to this block on your account, you will be unable to <strong>Recycle</strong> until the time duration is expired. If you have been blocked unjustly or have paid and was blocked, kindly write to our support team ,<strong>support@openpay.com</strong>. include your username when you are writing to us and we will get back to you within two days. <strong>Thanks #TeamOpenPay</strong>.</p>
 														</div>
 														<div class="content table-responsive table-full-width">
 
