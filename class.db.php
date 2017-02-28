@@ -27,7 +27,7 @@ class DB {
 }
 
 require 'class.user.php';
-require '/admin/class.admin.php';
+require 'admin/class.admin.php';
 $database = new DB();
 $user = new USER($database->db);
 $admin = new ADMIN($database->db);

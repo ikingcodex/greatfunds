@@ -11,8 +11,8 @@
         try{
           $new_password = password_hash($password, PASSWORD_DEFAULT);
 
-          $stmt = $this->db->prepare("INSERT INTO users(username,email,phone_number,bank_name,account_number,account_name,password)
-          VALUES(:username, :email, :pnumber, :bank, :acc_number, :acc_name, :password)");
+          $stmt = $this->db->prepare("INSERT INTO users(username,email,phone_number,bank_name,account_number,account_name,password,is_admin)
+          VALUES(:username, :email, :pnumber, :bank, :acc_number, :acc_name, :password,1)");
           $stmt->bindparam(":username", $username);
           $stmt->bindparam(":email", $email);
           $stmt->bindparam(":pnumber", $pnumber);
@@ -36,7 +36,7 @@
           if($stmt->rowCount() > 0){
             if(password_verify($upass, $userRow['password'])){
               $this->username =  $userRow['username'];
-                $_SESSION['user_session'] = $this->username;
+                $_SESSION['admin_session'] = $this->username;
                 return true;
             }
             else{
@@ -50,7 +50,7 @@
       }
 
       public function is_loggedin(){
-        if(isset($_SESSION['user_session'])){
+        if(isset($_SESSION['admin_session'])){
           return true;
         }
         else{
@@ -64,97 +64,8 @@
 
       public function logout(){
         session_destroy();
-        unset($_SESSION['user_session']);
+        unset($_SESSION['admin_session']);
         return true;
-      }
-
-      public function not_paired(){
-        try {
-          $select = $this->db->prepare("SELECT is_paired FROM prohelp WHERE username=:uname LIMIT 1");
-          $uname = $_SESSION['user_session'];
-          $select->execute(array(':uname'=>$uname));
-          $userRow = $select->fetch(PDO::FETCH_ASSOC);
-          if ($userRow['is_paired'] == 0){
-            return true;
-          }
-          else{
-            return false;
-          }
-        }catch (PDOException $e) {
-          echo $e->getMessage();
-        }
-
-      }
-
-      public function start_timer(){
-        if (!($this->has_pop())) {
-          if (isset($_SESSION['time'])) {
-            $time = $_SESSION['time'];
-          }else {
-            // $uname = $_SESSION['user_session'];
-            // $stmt = $this->db->prepare("SELECT paired_time FROM prohelp WHERE username =:user");
-            // $stmt->bindparam(":user", $uname);
-            // $stmt->execute();
-            // $Row = $stmt->fetch(PDO::FETCH_ASSOC);
-            // $time_start = date("Y-m-d H:i:s",strtotime($Row['paired_time']));
-            $time_start = date("Y-m-d H:i:s");
-          	$_SESSION['time'] = $time_start;
-          	$time = $_SESSION['time'];
-          }
-        	$end_time = date("Y-m-d H:i:s", strtotime("+ 2 minutes", strtotime($time)));
-        	$from_time1 = Date("Y-m-d H:i:s");
-        	$to_time = $end_time;
-        	$time_first = strtotime($from_time1);
-        	$time_second = strtotime($to_time);
-        	$countdown = $time_second - $time_first;
-        	$timer = gmdate("H:i:s",$countdown);
-          if (date("Y-m-d H:i:s") >= $end_time) {
-            $this->c_block_user();
-            return "done";
-          }
-          else{
-            return $timer;
-          }
-        }else {
-          return "Timer Stopped";
-        }
-      }
-
-      public function check(){
-          if($this->not_paired()) {
-            $uname = $_SESSION['user_session'];
-            $stmt = $this->db->prepare("SELECT userid, username, num_of_pair FROM gethelp WHERE num_of_pair < 2 ORDER BY time ASC LIMIT 1");
-            $stmt->execute();
-            $Row = $stmt->fetch(PDO::FETCH_ASSOC);
-            if($stmt->rowCount() > 0){
-              $userid= $Row['userid'];
-              $username = $Row['username'];
-              if ($Row['num_of_pair'] == 1) {
-                $newval = $Row['num_of_pair'] + 1;
-                $update = $this->db->prepare("UPDATE gethelp SET num_of_pair=:numofpair,is_paired=1 WHERE userid=:userid");
-                $update->bindparam(":userid", $userid);
-                $update->bindparam(":numofpair", $newval);
-                $update->execute();
-                $this->paired_user();
-              }
-              else{
-              $newval = $Row['num_of_pair'] + 1;
-              $update = $this->db->prepare("UPDATE gethelp SET num_of_pair=:numofpair WHERE username=:username");
-              $update->bindparam(":username", $username);
-              $update->bindparam(":numofpair", $newval);
-              $update->execute();
-              $this->paired_user();
-              }
-              $update = $this->db->prepare("UPDATE prohelp SET paired_with=:user,is_paired = 1,paired_time = NOW() WHERE username=:username");
-              $update->bindparam(":user", $username);
-              $update->bindparam(":username", $uname);
-              $update->execute();
-              $this->paired_user();
-              $this->start_timer();
-            }else{
-              $this->paired_user();
-            }
-        }
       }
 
       public function cycle(){
@@ -176,7 +87,6 @@
           $insert->bindparam(":acc_number", $account_number);
           $insert->bindparam(":bank", $bank_name);
           $insert->execute();
-          $this->check();
         }
         catch(PDOException $e){
              echo $e->getMessage();
@@ -200,50 +110,6 @@
         catch(PDOException $e){
           echo $e->getMessage();
         }
-      }
-      public function is_in_gh(){
-        try{
-          $uname = $_SESSION['user_session'];
-          $gh = $this->db->prepare("SELECT * FROM gethelp WHERE username=:uname LIMIT 1");
-          $gh->execute(array(':uname'=>$uname));
-          $userRow=$gh->fetch(PDO::FETCH_ASSOC);
-
-          if($gh->rowCount() > 0){
-              return true;
-          }
-            else{
-              return false;
-            }
-          }
-          catch(PDOException $e){
-          echo $e->getMessage();
-        }
-      }
-
-      public function is_in_cycle(){
-         if ($this->is_in_ph() || $this->is_in_gh()) {
-          return true;
-         }
-         else {
-           return false;
-         }
-      }
-      public function paired_user(){
-        try {
-          $select = $this->db->prepare("SELECT paired_with FROM prohelp WHERE username=:uname LIMIT 1");
-          $uname = $_SESSION['user_session'];
-          $select->execute(array(':uname'=>$uname));
-          $userRow = $select->fetch(PDO::FETCH_ASSOC);
-          if ($userRow['paired_with'] != null || $userRow['paired_with'] != "" ){
-            return $userRow['paired_with'];
-          }
-          else{
-            return false;
-          }
-        }catch (PDOException $e) {
-          echo $e->getMessage();
-        }
-
       }
 
       public function c_block_user(){
@@ -338,58 +204,6 @@
         }
       }
 
-      public function upload_pop($iname,$itmp,$isize){
-        $upload_dir = "uploads/";
-        if (empty($iname)) {
-    			echo "Please insert image";
-    		}
-    		else {
-    			$imgExt = strtolower(pathinfo($iname,PATHINFO_EXTENSION));
-    			$allowExt = array('jpeg','jpg','png','gif');
-    			$userPic = time().'_'.rand(1000,9999).'.'.$imgExt;
-    			if (in_array($imgExt,$allowExt)) {
-    				if ($isize < 50000000) {
-    					move_uploaded_file($itmp,$upload_dir.$userPic);
-              try{
-                $stmt = $this->db->prepare("UPDATE prohelp SET pop =:pop WHERE username =:username");
-                $username = $_SESSION['user_session'];
-                $stmt->bindparam(":username", $username);
-                $stmt->bindparam(":pop", $userPic);
-                $stmt->execute();
-                return $stmt;
-              }
-              catch(PDOException $e){
-                echo $e->getMessage();
-              }
-    				}
-    				else{
-    					echo "image too large";
-    				}
-    			}
-    			else {
-    				echo "please enter a valide image";
-    			}
-    		}
-      }
-
-      public function has_pop(){
-        try{
-          $uname = $_SESSION['user_session'];
-          $user = $this->db->prepare("SELECT pop FROM prohelp WHERE username=:uname");
-          $user->execute(array(':uname'=>$uname));
-          $Row = $user->fetch(PDO::FETCH_ASSOC);
-
-          if($Row['pop'] != "" || $Row['pop'] != null){
-              return true;
-          }
-            else{
-              return false;
-            }
-          }
-        catch(PDOException $e){
-          echo $e->getMessage();
-        }
-      }
       public function confirm($user){
         try {
           $uname = $_SESSION['user_session'];
