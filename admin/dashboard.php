@@ -52,51 +52,45 @@
 
             <ul class="nav">
                 <li class="active">
-                    <a href="dashboard.html">
+                    <a href="dashboard.php">
                         <i class="pe-7s-graph"></i>
                         <p>Dashboard</p>
                     </a>
                 </li>
                 <li>
-                    <a href="user.html">
+                    <a href="user.php">
                         <i class="pe-7s-user"></i>
                         <p>User Profile</p>
                     </a>
                 </li>
                 <li>
-                    <a href="table.html">
+                    <a href="table.php">
                         <i class="pe-7s-note2"></i>
                         <p>Table List</p>
                     </a>
                 </li>
                 <li>
-                    <a href="typography.html">
+                    <a href="typography.php">
                         <i class="pe-7s-news-paper"></i>
                         <p>Typography</p>
                     </a>
                 </li>
                 <li>
-                    <a href="icons.html">
+                    <a href="icons.php">
                         <i class="pe-7s-science"></i>
                         <p>Icons</p>
                     </a>
                 </li>
                 <li>
-                    <a href="maps.html">
+                    <a href="maps.php">
                         <i class="pe-7s-map-marker"></i>
                         <p>Maps</p>
                     </a>
                 </li>
                 <li>
-                    <a href="notifications.html">
+                    <a href="notifications.php">
                         <i class="pe-7s-bell"></i>
                         <p>Notifications</p>
-                    </a>
-                </li>
-				<li class="active-pro">
-                    <a href="upgrade.html">
-                        <i class="pe-7s-rocket"></i>
-                        <p>Upgrade to PRO</p>
                     </a>
                 </li>
             </ul>
@@ -190,7 +184,7 @@
                     <div class="col-md-4">
                         <div class="card">
                             <div class="header">
-                                <h4 class="title">Email Statistics</h4>
+                                <h4 class="title">Users Statistics</h4>
                                 <p class="category">Last Campaign Performance</p>
                             </div>
                             <div class="content">
@@ -198,9 +192,9 @@
 
                                 <div class="footer">
                                     <div class="legend">
-                                        <i class="fa fa-circle text-info"></i> Open
-                                        <i class="fa fa-circle text-danger"></i> Bounce
-                                        <i class="fa fa-circle text-warning"></i> Unsubscribe
+                                        <i class="fa fa-circle text-info"></i> Provide Help
+                                        <i class="fa fa-circle text-danger"></i> Blocked
+                                        <i class="fa fa-circle text-warning"></i> GetHelp
                                     </div>
                                     <hr>
                                     <div class="stats">
@@ -241,8 +235,8 @@
                     <div class="col-md-6">
                         <div class="card ">
                             <div class="header">
-                                <h4 class="title">2014 Sales</h4>
-                                <p class="category">All products including Taxes</p>
+                                <h4 class="title">2017 Cycles</h4>
+                                <p class="category">All cycles including prohelp and gethelp</p>
                             </div>
                             <div class="content">
                                 <div id="chartActivity" class="ct-chart"></div>

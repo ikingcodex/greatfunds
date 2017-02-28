@@ -126,6 +126,98 @@
 				width: 120px;
 				text-align: center
 			}
+
+			/*Properties Modal Images*/
+			#Fromcaptioon{
+			  letter-spacing: 2px;
+			}
+			.myImg {
+			    border-radius: 5px;
+			    cursor: pointer;
+			    transition: 0.3s;
+			}
+
+			.myImg:hover {opacity: 0.7;}
+
+			/* The Modal (background) */
+			.modal {
+			    display: none; /* Hidden by default */
+			    position: fixed; /* Stay in place */
+			    z-index: 1; /* Sit on top */
+			    padding-top: 100px; /* Location of the box */
+			    left: 0;
+			    top: 0;
+			    width: 100%; /* Full width */
+			    height: 100%; /* Full height */
+			    overflow: auto; /* Enable scroll if needed */
+			    background-color: rgb(0,0,0); /* Fallback color */
+			    background-color: rgba(0,0,0,0.9); /* Black w/ opacity */
+			}
+
+			/* Modal Content (image) */
+			.modal-content {
+			    margin: auto;
+			    display: block;
+			    width: 80%;
+			    max-width: 700px;
+			    height: auto;
+			}
+
+			/* Caption of Modal Image */
+			#caption {
+			    margin: auto;
+			    display: block;
+			    width: 80%;
+			    max-width: 700px;
+			    text-align: center;
+			    color: #ccc;
+			    padding: 10px 0;
+			}
+
+			/* Add Animation */
+			.modal-content, #caption {
+			    -webkit-animation-name: zoom;
+			    -webkit-animation-duration: 0.6s;
+			    animation-name: zoom;
+			    animation-duration: 0.6s;
+			}
+
+			@-webkit-keyframes zoom {
+			    from {transform:scale(0)}
+			    to {transform:scale(1)}
+			}
+
+			@keyframes zoom {
+			    from {transform:scale(0)}
+			    to {transform:scale(1)}
+			}
+
+			/* The Close Button */
+			.close {
+			    position: absolute;
+			    top: 15px;
+			    right: 35px;
+			    color: white;
+			    background-color: white;
+			    font-size: 40px;
+			    font-weight: bold;
+			    transition: 0.3s;
+			}
+			.close:hover,
+			.close:focus {
+			    color: #bbb;
+			    text-decoration: none;
+			    cursor: pointer;
+			}
+			.properties .container{
+			  margin-bottom: 50px;
+			}
+			/* 100% Image Width on Smaller Screens */
+			@media only screen and (max-width: 700px){
+			    .modal-content {
+			        width: 100%;
+			    }
+			}
 		</style>
 </head>
 <body>
@@ -290,7 +382,7 @@
 																					<form class="pop" action="profile.php" method="post">
 																					<button type="submit" name="confirm" value="{{user.name}}">Confirm</button>
 																				</form>
-																				<div class="pop-image" ng-show="{{user.pop}}">
+																				<div class="pop-image myImg" ng-show="{{user.pop}}" data-image="{{user.pop}}">
 																					View P.O.P <i class="pe-7s-news-paper"></i>
 																				</div>
 																			</td>
@@ -301,6 +393,16 @@
                             </div>
                         </div>
                     </div>
+
+										<!-- The Modal Image -->
+
+										<div id="myModal" class="modal">
+										 <span class="close"><span class="glyphicon glyphicon-remove"></span></span>
+										 <img class="modal-content" id="img01">
+										 <div id="caption"></div>
+										</div>
+
+
 										<?php } ?>
 										<?php if ($user->is_blocked() && $user->is_in_blockedlist()) { ?>
 										<div class="col-md-12">
