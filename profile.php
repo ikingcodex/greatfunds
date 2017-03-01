@@ -12,7 +12,7 @@
 	}
 	if($user->is_in_cycle()){
 		if (isset($_POST["cycle"])) {
-			return false;
+			$user->redirect('index.php');
 		}
 	}
 	else {
@@ -117,7 +117,7 @@
 			.block-card{
 				text-align: center;
 				box-shadow: 3px 3px 5px grey;
-				margin-top: 9%;
+				margin-top: 5%;
 				letter-spacing: 2px;
 			}
 			.block-card .category{
@@ -217,7 +217,6 @@
 			.image-class{
 				position: relative;
 				padding-top: 40%;
-				object-fit: contain;
 				width: 40%;
 				margin: auto;
 			}
@@ -229,6 +228,7 @@
 				bottom: 0;
 				width: 100%;
 				height: 100%;
+				object-fit: contain;
 			}
 			.glyphicon-remove{
 				padding: 10px 20px;
@@ -407,7 +407,7 @@
 																					<form class="pop" action="profile.php" method="post">
 																					<button type="submit" name="confirm" value="{{user.name}}" onclick='if (window.confirm("Are you sure you want to confirm "+this.value+"?")){ return true; }else{ return false;}'>Confirm</button>
 																				</form>
-																				<div class="pop-image myImg" ng-show="{{user.number}}" data-image="{{user.pop}}" onclick="clicki(this);">
+																				<div class="pop-image myImg" ng-show="{{user.pop}}" data-image="{{user.pop}}" onclick="clicki(this);">
 																					View P.O.P <i class="pe-7s-news-paper"></i>
 																				</div>
 																			</td>
@@ -432,22 +432,21 @@
 										<?php } ?>
 										<?php if ($user->is_blocked() && $user->is_in_blockedlist()) { ?>
 										<div class="col-md-12">
-												<div class="card block-card">
+												<div class="card block-card" style="padding:10px 20px;">
 														<div class="header">
 																<p class="category"> Dear <?php echo $_SESSION['user_session'];?>, you have been blocked for a minimum of 2weeks due to your inability to adhere to our policy and pay up whom you were paired to pay, at the given time of 24hours. Due to this block on your account, you will be unable to <strong>Recycle</strong> until the time duration is expired. If you have been blocked unjustly or have paid and was blocked, kindly write to our support team ,<strong>support@openpay.com</strong>. include your username when you are writing to us and we will get back to you within two days. <strong>Thanks #TeamOpenPay</strong>.</p>
 														</div>
 														<div class="content table-responsive table-full-width">
 															<form class="" action="profile.php" method="post">
 																<div class="row">
-																		<div class="col-md-12">
+																		<div class="col-md-6">
 																				<div class="form-group">
 																						<label>Send us a message</label>
-																						<textarea rows="5" class="form-control" placeholder="Here can be your description" value="Mike">Lamborghini Mercy, Your chick she so thirsty, I'm in that two seat Lambo.</textarea>
+																						<textarea rows="5" class="form-control" placeholder="Tell us what we can do for you"> </textarea>
 																				</div>
 																		</div>
 																</div>
-
-																<button type="submit" class="btn btn-info btn-fill pull-right">Update Profile</button>
+																<button type="submit" class="btn btn-info btn-fill pull-left">Send Message</button>
 																<div class="clearfix"></div>
 															</form>
 														</div>

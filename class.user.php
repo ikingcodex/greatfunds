@@ -393,6 +393,9 @@
 
       public function confirm($user){
         try {
+          $iselect = $this->db->prepare("SELECT pop FROM prohelp WHERE username=:uname");
+          $iselect->execute(array(':uname'=>$user));
+          $iRow = $iselect->fetch(PDO::FETCH_ASSOC);
           $uname = $_SESSION['user_session'];
           $delete = $this->db->prepare("DELETE FROM prohelp WHERE username =:user");
           $delete->bindparam(":user", $user);
@@ -403,6 +406,7 @@
           $select = $this->db->prepare("SELECT * FROM gethelp WHERE username=:uname");
           $select->execute(array(':uname'=>$user));
           if ($select->rowCount() > 0) {
+            unlink("uploads/".$iRow['pop']);
             $select = $this->db->prepare("SELECT is_confirmed FROM gethelp WHERE username=:username");
             $select->bindparam(":username", $uname);
             $select->execute();
@@ -411,6 +415,15 @@
               $delete = $this->db->prepare("DELETE FROM gethelp WHERE username =:user");
               $delete->bindparam(":user", $uname);
               $delete->execute();
+              $iselect = $this->db->prepare("SELECT number_of_cycles FROM users WHERE username=:uname");
+              $iselect->execute(array(':uname'=>$uname));
+              $iRow = $iselect->fetch(PDO::FETCH_ASSOC);
+              $newval = $iRow['number_of_cycles'] + 1;
+              $update = $this->db->prepare("UPDATE users SET number_of_cycles =:val WHERE username =:username");
+              $update->bindparam(":val", $newval);
+              $update->bindparam(":username", $uname);
+              $update->execute();
+
             }
             else {
               $newval = $Row['is_confirmed'] + 1;
