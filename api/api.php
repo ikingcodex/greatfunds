@@ -64,6 +64,23 @@ if($user->is_loggedin()){
         echo '{"timer":"'.$user->start_timer().'"}';
       break;
 
+      case 'confirm':
+        if ($user->is_in_gh()) {
+          echo '{"confirmation":"true"}';
+        }else {
+          echo '{"confirmation":"false"}';
+        }
+      break;
+
+      case 'iscon':
+        header("Access-Control-Allow-Origin: *");
+        header("Content-Type: application/json; charset=UTF-8");
+        $uselect = $database->db->prepare("SELECT is_confirmed FROM gethelp WHERE username=:uname");
+        $uselect->execute(array(':uname'=>$uname));
+        $Row = $uselect->fetch(PDO::FETCH_ASSOC);
+        echo '{"iscon":"'.$Row["is_confirmed"].'"}';
+      break;
+
       default:
         echo '{"error":"404"}';
       break;

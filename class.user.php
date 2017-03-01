@@ -390,6 +390,7 @@
           echo $e->getMessage();
         }
       }
+
       public function confirm($user){
         try {
           $uname = $_SESSION['user_session'];
@@ -420,6 +421,23 @@
             }
           }
         } catch (PDOException $e) {
+          echo $e->getMessage();
+        }
+      }
+
+      public function confirmed($uname){
+        try{
+          $user = $this->db->prepare("SELECT * FROM gethelp WHERE username=:uname");
+          $user->execute(array(':uname'=>$uname));
+
+          if ($user->rowCount() > 0) {
+              return true;
+          }
+            else{
+              return false;
+            }
+          }
+        catch(PDOException $e){
           echo $e->getMessage();
         }
       }

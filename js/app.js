@@ -9,36 +9,10 @@ app.controller('profilectrl', function($scope,$http,$timeout,$interval) {
 
   if (ph != null && ph != ""){
       show();
+      confirm();
   }
   if (gh != null && gh != ""){
       get();
-      // Get the modal
-      var modal = document.getElementById('myModal');
-
-      // Get the image and insert it inside the modal - use its "alt" text as a caption
-      var img = document.getElementsByClassName('myImg');
-      var modalImg = document.getElementById("img01");
-      var captionText = document.getElementById("caption");
-      var i;
-      for ( i = 0; i < img.length; i++){
-        img[i].onclick = function(){
-          modal.style.display = "block";
-          modalImg.src = this.data.image;
-        }
-      }
-
-      // Get the <span> element that closes the modal
-      $scope.span = document.getElementsByClassName("close")[0];
-
-      // When the user clicks on <span> (x), close the modal
-      $scope.span.onclick = function() {
-        modal.style.display = "none";
-      }
-      window.onclick = function(event) {
-        if (event.target == modal) {
-            modal.style.display = "none";
-        }
-      }
   }
   function show() {
     $http({
@@ -77,7 +51,20 @@ app.controller('profilectrl', function($scope,$http,$timeout,$interval) {
       $scope.gethelp = response.data.users;
       $scope.field = true
       $timeout(get, 5000);
-
+      var demo = document.getElementById('demo');
+      $http({
+          method: 'GET',
+          url: './api/api.php?view=iscon'
+      }).then(function successCallback(response){
+        if ($scope.gethelp.length > 0) {
+          demo.innerHTML ="";
+        }
+        if (response.data.iscon == "1" && $scope.gethelp.length == 0) {
+          demo.innerHTML ="Please Hold on, while our system is trying to pair you with the last user";
+        }else if (response.data.iscon == null) {
+          demo.innerHTML ="Please Hold on, while our system is trying to pair you.";
+        }
+      });
     });
   }
 
@@ -111,4 +98,42 @@ app.controller('profilectrl', function($scope,$http,$timeout,$interval) {
       });
   }
 
+  function confirm() {
+    $http({
+          method: 'GET',
+          url: './api/api.php?view=confirm',
+      }).then(function successCallback(response){
+          if (response.data.confirmation == "true") {
+            window.location = "http://localhost/greatfunds/"
+          }
+          else {
+            $timeout(confirm, 5000);
+          }
+      });
+  }
+
+
 });
+
+var modal = document.getElementById('myModal');
+
+// Get the image and insert it inside the modal - use its "alt" text as a caption
+var img = document.getElementsByClassName('myImg');
+var modalImg = document.getElementById("img01");
+function clicki(app){
+    modal.style.display = "block";
+    modalImg.src = "uploads/"+app.attributes[2].value;
+  console.log(app.attributes[2].value);
+}
+// Get the <span> element that closes the modal
+var span = document.getElementsByClassName("close")[0];
+
+// When the user clicks on <span> (x), close the modal
+span.onclick = function() {
+  modal.style.display = "none";
+}
+window.onclick = function(event) {
+  if (event.target == modal) {
+      modal.style.display = "none";
+  }
+}

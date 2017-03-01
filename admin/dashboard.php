@@ -1,3 +1,17 @@
+<?php
+	require_once '../class.db.php';
+
+	if(!($admin->is_loggedin()))
+	{
+			$user->redirect('login.php');
+	}
+	if (isset($_POST["logout"])) {
+		if($admin->logout()){
+			$admin->redirect('login.php');
+		}
+	}
+ ?>
+
 <!doctype html>
 <html lang="en">
 <head>
@@ -5,7 +19,7 @@
 	<link rel="icon" type="image/png" href="assets/img/favicon.ico">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 
-	<title>Light Bootstrap Dashboard by Creative Tim</title>
+	<title>OpenPay - Dashboard</title>
 
 	<meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
     <meta name="viewport" content="width=device-width" />
@@ -29,7 +43,13 @@
     <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
     <link href='http://fonts.googleapis.com/css?family=Roboto:400,700,300' rel='stylesheet' type='text/css'>
     <link href="assets/css/pe-icon-7-stroke.css" rel="stylesheet" />
-
+		<style media="screen">
+		.logbot{
+			background: transparent;
+			border: none;
+			padding:0px;
+		}
+		</style>
 </head>
 <body>
 
@@ -45,8 +65,8 @@
 
     	<div class="sidebar-wrapper">
             <div class="logo">
-                <a href="http://www.creative-tim.com" class="simple-text">
-                    Creative Tim
+                <a href="http://www.openpay.com" class="simple-text">
+                    openpay
                 </a>
             </div>
 
@@ -60,7 +80,7 @@
                 <li>
                     <a href="user.php">
                         <i class="pe-7s-user"></i>
-                        <p>User Profile</p>
+                        <p>Users Profile</p>
                     </a>
                 </li>
                 <li>
@@ -167,9 +187,11 @@
                               </ul>
                         </li>
                         <li>
-                            <a href="#">
-                                <p>Log out</p>
-                            </a>
+													<a>
+														<form action="dashboard.php" method="post">
+															<input type="submit" name="logout" value="Log out" class="logbot">
+														</form>
+													</a>
                         </li>
 						<li class="separator hidden-lg hidden-md"></li>
                     </ul>

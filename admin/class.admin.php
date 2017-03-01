@@ -30,7 +30,7 @@
 
       public function login($uname,$upass){
         try{
-          $stmt = $this->db->prepare("SELECT * FROM users WHERE username=:uname LIMIT 1");
+          $stmt = $this->db->prepare("SELECT * FROM users WHERE username=:uname AND is_admin = 1");
           $stmt->execute(array(':uname'=>$uname));
           $userRow=$stmt->fetch(PDO::FETCH_ASSOC);
           if($stmt->rowCount() > 0){
@@ -40,6 +40,7 @@
                 return true;
             }
             else{
+              echo "error";
               return false;
             }
           }

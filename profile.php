@@ -33,7 +33,11 @@
 	}
 	if (isset($_POST["confirm"])) {
       $name = $_POST["confirm"];
-		$user->confirm($name);
+			if($user->confirmed($name)){
+				$user->redirect('index.php');
+			}else{
+				$user->confirm($name);
+			}
 	}
 
  ?>
@@ -46,7 +50,7 @@
 	<link rel="icon" type="image/png" href="assets/img/favicon.ico">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 
-	<title>OpenPay</title>
+	<title>OpenPay Investments</title>
 
 	<meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
     <meta name="viewport" content="width=device-width" />
@@ -72,6 +76,8 @@
 				background: transparent;
 				border: none;
 				padding:0px;
+				text-align: center;
+				width: 100% !important;
 			}
 			.cycle button{
 				border: none;
@@ -163,19 +169,8 @@
 			    height: auto;
 			}
 
-			/* Caption of Modal Image */
-			#caption {
-			    margin: auto;
-			    display: block;
-			    width: 80%;
-			    max-width: 700px;
-			    text-align: center;
-			    color: #ccc;
-			    padding: 10px 0;
-			}
-
 			/* Add Animation */
-			.modal-content, #caption {
+			.modal-content {
 			    -webkit-animation-name: zoom;
 			    -webkit-animation-duration: 0.6s;
 			    animation-name: zoom;
@@ -217,6 +212,26 @@
 			    .modal-content {
 			        width: 100%;
 			    }
+			}
+
+			.image-class{
+				position: relative;
+				padding-top: 40%;
+				object-fit: contain;
+				width: 40%;
+				margin: auto;
+			}
+			.image-class img{
+				position: absolute;
+				top: -100px;
+				left: 0;
+				right: 0;
+				bottom: 0;
+				width: 100%;
+				height: 100%;
+			}
+			.glyphicon-remove{
+				padding: 10px 20px;
 			}
 		</style>
 </head>
@@ -264,7 +279,7 @@
 										<?php
 										if(!($user->is_in_cycle() || $user->is_blocked())){
 											?>
-											<a class="navbar-brand">Welcome!, click on <strong>Recycle</strong> to begin</a>
+											<a class="navbar-brand">Click on <strong>Recycle</strong> to begin</a>
 											<?php
 										}
 										?>
@@ -283,10 +298,17 @@
                                <p>Community</p>
                             </a>
                         </li>
+												<?php if(true){ ?>
+													<li>
+	                           <a href="admin/">
+	                               <p>Switch to admin</p>
+	                            </a>
+	                        </li>
+													<?php } ?>
                         <li>
                             <a>
 															<form action="profile.php" method="post">
-																<input type="submit" name="logout" value="Log out" class="logbot">
+																<input type="submit" name="logout" value="Log out" class="logbot" >
 															</form>
                             </a>
                         </li>
@@ -355,6 +377,9 @@
 										<?php } ?>
 
 										<?php if($user->is_in_gh()){ ?>
+											<div class="notification" ng-show="{{gethelp}}" id="demo">
+												Please Hold on, while our system is trying to pair you <i class="pe-7s-refresh-2"></i>
+											</div>
                     <div class="col-md-12" id="gh-table">
                         <div class="card card-plain">
                             <div class="header">
@@ -380,9 +405,9 @@
 																				<td>{{user.number}}</td>
 																				<td ng-show="{{field}}">
 																					<form class="pop" action="profile.php" method="post">
-																					<button type="submit" name="confirm" value="{{user.name}}">Confirm</button>
+																					<button type="submit" name="confirm" value="{{user.name}}" onclick='if (window.confirm("Are you sure you want to confirm "+this.value+"?")){ return true; }else{ return false;}'>Confirm</button>
 																				</form>
-																				<div class="pop-image myImg" ng-show="{{user.pop}}" data-image="{{user.pop}}">
+																				<div class="pop-image myImg" ng-show="{{user.number}}" data-image="{{user.pop}}" onclick="clicki(this);">
 																					View P.O.P <i class="pe-7s-news-paper"></i>
 																				</div>
 																			</td>
@@ -397,9 +422,10 @@
 										<!-- The Modal Image -->
 
 										<div id="myModal" class="modal">
-										 <span class="close"><span class="glyphicon glyphicon-remove"></span></span>
-										 <img class="modal-content" id="img01">
-										 <div id="caption"></div>
+											 <span class="close"><span class="glyphicon glyphicon-remove"></span></span>
+											 <div class="image-class">
+												 <img class="modal-content" id="img01">
+											 </div>
 										</div>
 
 
@@ -411,7 +437,19 @@
 																<p class="category"> Dear <?php echo $_SESSION['user_session'];?>, you have been blocked for a minimum of 2weeks due to your inability to adhere to our policy and pay up whom you were paired to pay, at the given time of 24hours. Due to this block on your account, you will be unable to <strong>Recycle</strong> until the time duration is expired. If you have been blocked unjustly or have paid and was blocked, kindly write to our support team ,<strong>support@openpay.com</strong>. include your username when you are writing to us and we will get back to you within two days. <strong>Thanks #TeamOpenPay</strong>.</p>
 														</div>
 														<div class="content table-responsive table-full-width">
+															<form class="" action="profile.php" method="post">
+																<div class="row">
+																		<div class="col-md-12">
+																				<div class="form-group">
+																						<label>Send us a message</label>
+																						<textarea rows="5" class="form-control" placeholder="Here can be your description" value="Mike">Lamborghini Mercy, Your chick she so thirsty, I'm in that two seat Lambo.</textarea>
+																				</div>
+																		</div>
+																</div>
 
+																<button type="submit" class="btn btn-info btn-fill pull-right">Update Profile</button>
+																<div class="clearfix"></div>
+															</form>
 														</div>
 												</div>
 										</div>
@@ -425,26 +463,21 @@
             <div class="container-fluid">
                 <nav class="pull-left">
                     <ul>
-                        <li>
-                            <a href="#">
-                                Home
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#">
-                                Company
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#">
-                                Portfolio
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#">
-                               Blog
-                            </a>
-                        </li>
+											<li>
+													<a href="#">
+															Privacy
+													</a>
+											</li>
+											<li>
+													<a href="#">
+															Terms & Condition
+													</a>
+											</li>
+											<li>
+													<a href="#">
+															FAQ
+													</a>
+											</li>
                     </ul>
                 </nav>
                 <p class="copyright pull-right">
@@ -463,7 +496,6 @@
     <script src="assets/js/jquery-1.10.2.js" type="text/javascript"></script>
 	<script src="assets/js/bootstrap.min.js" type="text/javascript"></script>
 
-	<!-- <script src="js/myscript.js"></script> -->
 	<script src="js/app.js"></script>
 
 	<!--  Checkbox, Radio & Switch Plugins -->
