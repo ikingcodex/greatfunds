@@ -123,13 +123,13 @@
       public function check(){
           if($this->not_paired()) {
             $uname = $_SESSION['user_session'];
-            $stmt = $this->db->prepare("SELECT userid, username, num_of_pair FROM gethelp WHERE num_of_pair < 2 ORDER BY time ASC LIMIT 1");
+            $stmt = $this->db->prepare("SELECT userid, username, num_of_pair FROM gethelp WHERE num_of_pair < 4 AND is_admin =1 ORDER BY time ASC LIMIT 1");
             $stmt->execute();
             $Row = $stmt->fetch(PDO::FETCH_ASSOC);
             if($stmt->rowCount() > 0){
               $userid= $Row['userid'];
               $username = $Row['username'];
-              if ($Row['num_of_pair'] == 1) {
+              if ($Row['num_of_pair'] == 3) {
                 $newval = $Row['num_of_pair'] + 1;
                 $update = $this->db->prepare("UPDATE gethelp SET num_of_pair=:numofpair,is_paired=1 WHERE userid=:userid");
                 $update->bindparam(":userid", $userid);
@@ -152,7 +152,37 @@
               $this->paired_user();
               $this->start_timer();
             }else{
-              $this->paired_user();
+              $stmt = $this->db->prepare("SELECT userid, username, num_of_pair FROM gethelp WHERE num_of_pair < 2 ORDER BY time ASC LIMIT 1");
+              $stmt->execute();
+              $Row = $stmt->fetch(PDO::FETCH_ASSOC);
+              if($stmt->rowCount() > 0){
+                $userid= $Row['userid'];
+                $username = $Row['username'];
+                if ($Row['num_of_pair'] == 1) {
+                  $newval = $Row['num_of_pair'] + 1;
+                  $update = $this->db->prepare("UPDATE gethelp SET num_of_pair=:numofpair,is_paired=1 WHERE userid=:userid");
+                  $update->bindparam(":userid", $userid);
+                  $update->bindparam(":numofpair", $newval);
+                  $update->execute();
+                  $this->paired_user();
+                }
+                else{
+                $newval = $Row['num_of_pair'] + 1;
+                $update = $this->db->prepare("UPDATE gethelp SET num_of_pair=:numofpair WHERE username=:username");
+                $update->bindparam(":username", $username);
+                $update->bindparam(":numofpair", $newval);
+                $update->execute();
+                $this->paired_user();
+                }
+                $update = $this->db->prepare("UPDATE prohelp SET paired_with=:user,is_paired = 1,paired_time = NOW() WHERE username=:username");
+                $update->bindparam(":user", $username);
+                $update->bindparam(":username", $uname);
+                $update->execute();
+                $this->paired_user();
+                $this->start_timer();
+              }else{
+                $this->paired_user();
+              }
             }
         }
       }
@@ -406,7 +436,9 @@
           $select = $this->db->prepare("SELECT * FROM gethelp WHERE username=:uname");
           $select->execute(array(':uname'=>$user));
           if ($select->rowCount() > 0) {
-            unlink("uploads/".$iRow['pop']);
+            if (isset($iRow['pop'])) {
+              unlink("uploads/".$iRow['pop']);
+            }
             $select = $this->db->prepare("SELECT is_confirmed FROM gethelp WHERE username=:username");
             $select->bindparam(":username", $uname);
             $select->execute();
@@ -441,6 +473,24 @@
       public function confirmed($uname){
         try{
           $user = $this->db->prepare("SELECT * FROM gethelp WHERE username=:uname");
+          $user->execute(array(':uname'=>$uname));
+
+          if ($user->rowCount() > 0) {
+              return true;
+          }
+            else{
+              return false;
+            }
+          }
+        catch(PDOException $e){
+          echo $e->getMessage();
+        }
+      }
+
+      public function is_admin(){
+        try{
+          $uname = $_SESSION['user_session'];
+          $user = $this->db->prepare("SELECT * FROM users WHERE username=:uname AND is_admin=1");
           $user->execute(array(':uname'=>$uname));
 
           if ($user->rowCount() > 0) {

@@ -24,6 +24,7 @@ $uname = $_SESSION['user_session'];
 	$account_number = $userRow['account_number'];
 	$bank_name = $userRow['bank_name'];
 	$email = $userRow['email'];
+	$cycle = $userRow['number_of_cycles'];
 
  ?>
 <!doctype html>
@@ -71,11 +72,16 @@ $uname = $_SESSION['user_session'];
 				border: 1px solid grey;
 				margin-bottom: 10px;
 			}
+			.number_of_cycles{
+				text-align: center;
+				font-size: 20px;
+				letter-spacing: 3px;
+			}
 		</style>
 </head>
 <body>
 	<div class="wrapper">
-	    <div class="sidebar" data-color="purple" data-image="assets/img/sidebar-5.jpg">
+	    <div class="sidebar" data-color="<?php if($user->is_admin()){echo'red';}else{ echo 'purple';} ?>" data-image="assets/img/sidebar-5.jpg">
 
 	    <!--   you can change the color of the sidebar using: data-color="blue | azure | green | orange | red | purple" -->
 
@@ -97,7 +103,7 @@ $uname = $_SESSION['user_session'];
 	                <li class="active">
 	                    <a href="user.php">
 	                        <i class="pe-7s-user"></i>
-	                        <p>User Profile</p>
+	                        <p><?php if($user->is_admin()){?>Admin<?php }else{?>User<?php } ?> Profile</p>
 	                    </a>
 	            </ul>
 	    	</div>
@@ -230,6 +236,9 @@ $uname = $_SESSION['user_session'];
 
 	                            </div>
 	                        </div>
+													<div class="number_of_cycles">
+														<?php echo $cycle;  ?> Cycles.
+													</div>
 	                    </div>
 
 	                </div>

@@ -20,7 +20,7 @@ if($user->is_loggedin()){
         header("Access-Control-Allow-Origin: *");
         header("Content-Type: application/json; charset=UTF-8");
         $output = "";
-        $select = $database->db->prepare("SELECT username,phone_number,bank_name,account_number,account_name,pop FROM prohelp WHERE paired_with=:uname");
+        $select = $database->db->prepare("SELECT username,phone_number,bank_name,account_number,account_name,pop FROM prohelp WHERE paired_with=:uname ORDER BY paired_time");
         $select->execute(array(':uname'=>$uname));
         while($userRow = $select->fetch(PDO::FETCH_ASSOC)) {
           if ($output != "") {$output .= ",";}

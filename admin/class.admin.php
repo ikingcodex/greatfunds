@@ -76,17 +76,9 @@
           $select->execute(array(':uname'=>$uname));
           $userRow = $select->fetch(PDO::FETCH_ASSOC);
           $username = $userRow['username'];
-          $phone_number = $userRow['phone_number'];
-          $account_name = $userRow['account_name'];
-          $account_number = $userRow['account_number'];
-          $bank_name = $userRow['bank_name'];
-          $insert = $this->db->prepare("INSERT INTO prohelp(username,phone_number,account_name,bank_name,account_number)
-          VALUES(:username, :pnumber, :acc_name, :bank, :acc_number)");
+          $insert = $this->db->prepare("INSERT INTO gethelp(username,is_admin)
+          VALUES(:username,1)");
           $insert->bindparam(":username", $username);
-          $insert->bindparam(":pnumber", $phone_number);
-          $insert->bindparam(":acc_name", $account_name);
-          $insert->bindparam(":acc_number", $account_number);
-          $insert->bindparam(":bank", $bank_name);
           $insert->execute();
         }
         catch(PDOException $e){
@@ -207,6 +199,9 @@
 
       public function confirm($user){
         try {
+          $iselect = $this->db->prepare("SELECT pop FROM prohelp WHERE username=:uname");
+          $iselect->execute(array(':uname'=>$user));
+          $iRow = $iselect->fetch(PDO::FETCH_ASSOC);
           $uname = $_SESSION['user_session'];
           $delete = $this->db->prepare("DELETE FROM prohelp WHERE username =:user");
           $delete->bindparam(":user", $user);
@@ -217,14 +212,26 @@
           $select = $this->db->prepare("SELECT * FROM gethelp WHERE username=:uname");
           $select->execute(array(':uname'=>$user));
           if ($select->rowCount() > 0) {
+            if (isset($iRow['pop'])) {
+              unlink("uploads/".$iRow['pop']);
+            }
             $select = $this->db->prepare("SELECT is_confirmed FROM gethelp WHERE username=:username");
             $select->bindparam(":username", $uname);
             $select->execute();
             $Row = $select->fetch(PDO::FETCH_ASSOC);
-            if ($Row['is_confirmed'] == 1) {
+            if ($Row['is_confirmed'] == 3) {
               $delete = $this->db->prepare("DELETE FROM gethelp WHERE username =:user");
               $delete->bindparam(":user", $uname);
               $delete->execute();
+              $iselect = $this->db->prepare("SELECT number_of_cycles FROM users WHERE username=:uname");
+              $iselect->execute(array(':uname'=>$uname));
+              $iRow = $iselect->fetch(PDO::FETCH_ASSOC);
+              $newval = $iRow['number_of_cycles'] + 1;
+              $update = $this->db->prepare("UPDATE users SET number_of_cycles =:val WHERE username =:username");
+              $update->bindparam(":val", $newval);
+              $update->bindparam(":username", $uname);
+              $update->execute();
+
             }
             else {
               $newval = $Row['is_confirmed'] + 1;

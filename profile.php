@@ -17,7 +17,12 @@
 	}
 	else {
 		if (isset($_POST["cycle"])) {
-			$user->cycle();
+			if ($user->is_admin()) {
+				$admin->cycle();
+			}
+			else {
+				$user->cycle();
+			}
 		}
 	}
 
@@ -26,17 +31,29 @@
 	}
 
 	if (isset($_POST["pop_button"])) {
-		$imgName = $_FILES["pop"]["name"];
-		$imgTmp = $_FILES["pop"]["tmp_name"];
-		$imgSize = $_FILES["pop"]["size"];
-		$user->upload_pop($imgName,$imgTmp,$imgSize);
+		if ($user->has_pop()) {
+			$user->redirect('index.php');
+		}else{
+			$imgName = $_FILES["pop"]["name"];
+			$imgTmp = $_FILES["pop"]["tmp_name"];
+			$imgSize = $_FILES["pop"]["size"];
+			$user->upload_pop($imgName,$imgTmp,$imgSize);
+		}
 	}
 	if (isset($_POST["confirm"])) {
       $name = $_POST["confirm"];
-			if($user->confirmed($name)){
-				$user->redirect('index.php');
+			if ($user->is_admin()) {
+				if($user->confirmed($name)){
+					$user->redirect('index.php');
+				}else{
+					$admin->confirm($name);
+				}
 			}else{
-				$user->confirm($name);
+				if($user->confirmed($name)){
+					$user->redirect('index.php');
+				}else{
+					$user->confirm($name);
+				}
 			}
 	}
 
@@ -238,7 +255,7 @@
 <body>
 <div class="wrapper">
 	<?php if(!($user->is_blocked())){ ?>
-    <div class="sidebar" data-color="purple" data-image="assets/img/sidebar-5.jpg">
+    <div class="sidebar" data-color="<?php if($user->is_admin()){echo'red';}else{ echo 'purple';} ?>" data-image="assets/img/sidebar-5.jpg">
 
     <!--   you can change the color of the sidebar using: data-color="blue | azure | green | orange | red | purple" -->
     	<div class="sidebar-wrapper">
@@ -258,7 +275,7 @@
                 <li>
                     <a href="user.php">
                         <i class="pe-7s-user"></i>
-                        <p>User Profile</p>
+                        <p><?php if($user->is_admin()){?>Admin<?php }else{?>User<?php } ?> Profile</p>
                     </a>
                 </li>
             </ul>
@@ -279,7 +296,7 @@
 										<?php
 										if(!($user->is_in_cycle() || $user->is_blocked())){
 											?>
-											<a class="navbar-brand">Click on <strong>Recycle</strong> to begin</a>
+											<a class="navbar-brand">Click on <strong><?php if($user->is_admin()){ ?> Pair <?php }else{ ?> Recycle <?php } ?></strong> to begin</a>
 											<?php
 										}
 										?>
@@ -298,7 +315,7 @@
                                <p>Community</p>
                             </a>
                         </li>
-												<?php if(true){ ?>
+												<?php if($user->is_admin()){ ?>
 													<li>
 	                           <a href="admin/">
 	                               <p>Switch to admin</p>
@@ -329,7 +346,11 @@
 									<?php if(!($user->is_in_cycle() || $user->is_blocked())){ ?>
 									<div class="cycle">
 										<form class="" action="profile.php" method="post">
+											<?php if ($user->is_admin()){ ?>
+												<button type="submit" name="cycle">Pair</button>
+												<?php } else{?>
 											<button type="submit" name="cycle">Recycle</button>
+											<?php } ?>
 										</form>
 									</div>
 									<?php } ?>
@@ -360,12 +381,16 @@
 																					<td>{{user.account_name}}</td>
 																					<td>{{user.bank_name}}</td>
 																					<td>{{user.number}}</td>
+																					<?php if($user->has_pop()){ ?>
+																						<td>Sent...</td>
+																						<?php }else{?>
                                         	<td ng-show="{{field}}">
-																						<form class="pop" action="profile.php" enctype="multipart/form-data" method="post" onsubmit=" return $scope.test();">
+																						<form class="pop" action="profile.php" enctype="multipart/form-data" method="post">
 																						<input type="file" name="pop">
 																						<button type="submit" name="pop_button">send</button>
                                         	</form>
 																				</td>
+																				<?php } ?>
                                         </tr>
                                     </tbody>
                                 </table>
