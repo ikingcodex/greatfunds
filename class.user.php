@@ -28,6 +28,43 @@
         }
       }
 
+      public function update($username,$email,$pnumber,$bank,$acc_number,$acc_name,$password){
+        try{
+          $uname = $_SESSION['user_session'];
+          if($password = ""){
+            $new_password = password_hash($password, PASSWORD_DEFAULT);
+
+            $stmt = $this->db->prepare("UPDATE users SET username = :username, email = :email, phone_number = :pnumber, bank_name = :bank, account_number = :acc_number, account_name = :acc_name, password = :password WHERE username = :user");
+            $stmt->bindparam(":username", $username);
+            $stmt->bindparam(":email", $email);
+            $stmt->bindparam(":pnumber", $pnumber);
+            $stmt->bindparam(":bank", $bank);
+            $stmt->bindparam(":acc_number", $acc_number);
+            $stmt->bindparam(":acc_name", $acc_name);
+            $stmt->bindparam(":user", $uname);
+            $stmt->bindparam(":password", $new_password);
+            $stmt->execute();
+            return $stmt;
+          }
+          else{
+            $new_password = password_hash($password, PASSWORD_DEFAULT);
+            $stmt = $this->db->prepare("UPDATE users SET username = :username, email = :email, phone_number = :pnumber, bank_name = :bank, account_number = :acc_number, account_name = :acc_name WHERE username = :user");
+            $stmt->bindparam(":username", $username);
+            $stmt->bindparam(":email", $email);
+            $stmt->bindparam(":pnumber", $pnumber);
+            $stmt->bindparam(":bank", $bank);
+            $stmt->bindparam(":acc_number", $acc_number);
+            $stmt->bindparam(":acc_name", $acc_name);
+            $stmt->bindparam(":user", $uname);
+            $stmt->execute();
+            return $stmt;
+          }
+        }
+        catch(PDOException $e){
+          echo $e->getMessage();
+        }
+      }
+
       public function login($uname,$upass){
         try{
           $stmt = $this->db->prepare("SELECT * FROM users WHERE username=:uname LIMIT 1");

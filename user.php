@@ -26,6 +26,89 @@ $uname = $_SESSION['user_session'];
 	$email = $userRow['email'];
 	$cycle = $userRow['number_of_cycles'];
 
+	if(isset($_POST['btn-update'])){
+
+		$username=htmlspecialchars(strip_tags(trim($_POST['username'])));
+		$email=htmlspecialchars(strip_tags(trim($_POST['email'])));
+		$pnumber=htmlspecialchars(strip_tags(trim($_POST['pnumber'])));
+		$bank=htmlspecialchars(strip_tags(trim($_POST['bank'])));
+		$acc_number=htmlspecialchars(strip_tags(trim($_POST['accnumber'])));
+		$acc_name=htmlspecialchars(strip_tags(trim($_POST['accname'])));
+		$oldpassword=htmlspecialchars(strip_tags(trim($_POST['oldpassword'])));
+		$newpassword=htmlspecialchars(strip_tags(trim($_POST['newpassword'])));
+
+		 if($username == "") {
+				$error = "provide username !";
+		 }
+		 else if($pnumber == "" ){
+			 $error = 'Phone number must not be empty';
+		}
+		 else if((strlen($pnumber) < 11) || (strlen($pnumber) > 11)){
+				$error = 'Phone number must be 11 digits!, i.e 080-00-00-0000';
+		 }
+		 else if($email == "") {
+				$error =  "email field cannot be empty!";
+		 }
+		 else if(!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+				$error = 'Please enter a valid email address !';
+		 }
+		 else if($acc_number == ""){
+			 $error = 'Account number cannot be empty!';
+		}
+		else if((strlen($acc_number) < 10) || (strlen($acc_number) > 10)){
+				$error = 'Account number must be 10 digits!';
+		}
+		else if($acc_name == ""){
+				$error = 'Account name cannot!';
+		}
+		else if(($oldpassword == "") && ($newpassword != "")) {
+				$error = "provide old password to be able to change new password !";
+		}
+		else if(($newpassword != "") && ($oldpassword == "")) {
+				$error = "provide old password to be able to change new password !";
+		}
+		else if(((strlen($oldpassword) < 6) || (strlen($newpassword) < 6)) && (($oldpassword == "") && ($newpassword != ""))){
+				$error = "Password must be atleast 6 characters";
+		}
+		 else{
+				try
+				{
+					 $stmt = $user->db->prepare("SELECT username,email FROM users WHERE username=:uname OR email=:umail");
+					 $stmt->execute(array(':uname'=>$username, ':umail'=>$email));
+					 $row=$stmt->fetch(PDO::FETCH_ASSOC);
+
+					 $ustmt = $user->db->prepare("SELECT username, email, password FROM users WHERE username=:uname");
+					 $ustmt->execute(array(':uname'=>$uname));
+					 $urow=$ustmt->fetch(PDO::FETCH_ASSOC);
+					  if ($username != $urow['username']) {
+						  if($row['username'] == $username) {
+								$error = "sorry username already taken !";
+						  }
+					  }
+						elseif ($email != $urow['email']) {
+							if($row['email'] == $email) {
+	 							$error = "sorry email id already taken !";
+	 					  }
+						}
+					  else{
+							if(($oldpassword != "") && ($newpassword != "")){
+								if(password_verify($oldpassword, $urow['password'])){
+									$password = $newpassword;
+								}
+								else{
+									$error = "Old password incorrect";
+								}
+							}elseif($oldpassword == "" && $newpassword == ""){
+								$password = "";
+							}
+					 }
+			 }
+			 catch(PDOException $e)
+			 {
+					echo $e->getMessage();
+			 }
+		}
+	}
  ?>
 <!doctype html>
 <html lang="en">
@@ -76,6 +159,13 @@ $uname = $_SESSION['user_session'];
 				text-align: center;
 				font-size: 20px;
 				letter-spacing: 3px;
+			}
+			.error_message{
+				font-size: 20px;
+				text-align: center;
+				padding: 20px;
+				background-color: #f23f3f;
+				color: white;
 			}
 		</style>
 </head>
@@ -143,6 +233,23 @@ $uname = $_SESSION['user_session'];
 
 
 	        <div class="content">
+							<?php
+							if(isset($_POST['btn-update'])){
+							 if(isset($error)){ ?>
+								 <div class="card error_message">
+								<p><?php
+								 echo $error;
+								 return false;
+								 ?></p>
+								 </div>
+								<?php }else{
+									if($user->update($username,$email,$pnumber,$bank,$acc_number,$acc_name,$password)){
+										$user->logout();
+										$user->redirect("login.php");
+									}
+								}
+							}
+								 ?>
 	            <div class="container-fluid">
 	                <div class="row">
 	                    <div class="col-md-12" style="margin:auto">
@@ -168,7 +275,7 @@ $uname = $_SESSION['user_session'];
 	                                        <div class="col-md-4">
 	                                            <div class="form-group">
 	                                                <label for="exampleInputEmail1">Phone Number</label>
-	                                                <input type="" name="pnumber" id="pnumber" class="form-control" placeholder="Enter Number" value="<?php echo $phone_number; ?>" required>
+	                                                <input type="text" name="pnumber" id="pnumber" class="form-control" placeholder="Enter Number" value="<?php echo $phone_number; ?>" required>
 	                                            </div>
 	                                        </div>
 	                                    </div>
@@ -189,8 +296,8 @@ $uname = $_SESSION['user_session'];
 																					<div class="col-md-4">
 																						<div class="form-group">
 																							<label>Bank Name</label>
-																							<select class="cs-select cs-skin-elastic col-md-12 col-sm-12" id="bank" name="bank">
-																		  					<option value="<?php echo $bank_name; ?>" disabled selected><?php echo $bank_name; ?></option>
+																							<select name="bank" class="cs-select cs-skin-elastic col-md-12 col-sm-12" id="bank">
+																		  					<option value="<?php echo $bank_name; ?>"selected><?php echo $bank_name; ?></option>
 																		  					<option value="Diamond Bank">Diamond Bank</option>
 																		  					<option value="First Bank">First Bank</option>
 																		  					<option value="Skye Bank">Skye Bank</option>
@@ -229,8 +336,9 @@ $uname = $_SESSION['user_session'];
 	                                            </div>
 	                                        </div>
 	                                    </div>
-
-	                                    <button type="submit" class="btn btn-info btn-fill pull-right">Update Profile</button>
+																			<?php if(!($user->is_in_cycle())){ ?>
+	                                    <button type="submit" class="btn btn-info btn-fill pull-right" name="btn-update">Update Profile</button>
+																			<?php } ?>
 	                                    <div class="clearfix"></div>
 	                                </form>
 
@@ -278,8 +386,8 @@ $uname = $_SESSION['user_session'];
 </body>
 
     <!--   Core JS Files   -->
-  <script src="assets/js/jquery-1.10.2.js" type="text/javascript"></script>
-	<script src="assets/js/bootstrap.min.js" type="text/javascript"></script>
+  <script src="assets/js/jquery-1.10.2.js"></script>
+	<script src="assets/js/bootstrap.min.js"></script>
 	<script src="js/validate.js"></script>
 
 	<!--  Checkbox, Radio & Switch Plugins -->
