@@ -93,7 +93,7 @@ app.controller('profilectrl', function($scope,$http,$timeout,$interval) {
             window.location = "http://localhost/greatfunds/"
           }
           else if (response.data.timer == "Timer Stopped") {
-            document.getElementById('timer').innerHTML = "Hold on while your being confirmed by the other user.";
+            document.getElementById('timer').innerHTML = "Hold on while your being confirmed by "+$scope.paired_user;
             $interval.cancel($scope.interval);
           }
       });
