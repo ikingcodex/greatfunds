@@ -10,6 +10,26 @@
 			$admin->redirect('login.php');
 		}
 	}
+	if (isset($_GET['registered'])) {
+		?>
+		<script type="text/javascript">
+	    	$(document).ready(function(){
+
+	        	demo.initChartist();
+
+	        	$.notify({
+	            	icon: 'pe-7s-gift',
+	            	message: "Welcome to <b>Light Bootstrap Dashboard</b> - a beautiful freebie for every web developer."
+
+	            },{
+	                type: 'info',
+	                timer: 4000
+	            });
+
+	    	});
+		</script>
+		<?php
+	}
  ?>
 
 <!doctype html>
@@ -54,69 +74,7 @@
 <body>
 
 <div class="wrapper">
-    <div class="sidebar" data-color="purple" data-image="assets/img/sidebar-5.jpg">
-
-    <!--
-
-        Tip 1: you can change the color of the sidebar using: data-color="blue | azure | green | orange | red | purple"
-        Tip 2: you can also add an image using data-image tag
-
-    -->
-
-    	<div class="sidebar-wrapper">
-            <div class="logo">
-                <a href="http://www.openpay.com" class="simple-text">
-                    openpay
-                </a>
-            </div>
-
-            <ul class="nav">
-                <li class="active">
-                    <a href="dashboard.php">
-                        <i class="pe-7s-graph"></i>
-                        <p>Dashboard</p>
-                    </a>
-                </li>
-                <li>
-                    <a href="user.php">
-                        <i class="pe-7s-user"></i>
-                        <p>Users Profile</p>
-                    </a>
-                </li>
-                <li>
-                    <a href="table.php">
-                        <i class="pe-7s-note2"></i>
-                        <p>Table List</p>
-                    </a>
-                </li>
-                <li>
-                    <a href="typography.php">
-                        <i class="pe-7s-news-paper"></i>
-                        <p>Typography</p>
-                    </a>
-                </li>
-                <li>
-                    <a href="icons.php">
-                        <i class="pe-7s-science"></i>
-                        <p>Icons</p>
-                    </a>
-                </li>
-                <li>
-                    <a href="maps.php">
-                        <i class="pe-7s-map-marker"></i>
-                        <p>Maps</p>
-                    </a>
-                </li>
-                <li>
-                    <a href="notifications.php">
-                        <i class="pe-7s-bell"></i>
-                        <p>Notifications</p>
-                    </a>
-                </li>
-            </ul>
-    	</div>
-    </div>
-
+    <?php include "include/sidebar.php" ?>
     <div class="main-panel">
         <nav class="navbar navbar-default navbar-fixed">
             <div class="container-fluid">
@@ -402,37 +360,7 @@
         </div>
 
 
-        <footer class="footer">
-            <div class="container-fluid">
-                <nav class="pull-left">
-                    <ul>
-                        <li>
-                            <a href="#">
-                                Home
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#">
-                                Company
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#">
-                                Portfolio
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#">
-                               Blog
-                            </a>
-                        </li>
-                    </ul>
-                </nav>
-                <p class="copyright pull-right">
-                    &copy; <script>document.write(new Date().getFullYear())</script> <a href="http://www.creative-tim.com">Creative Tim</a>, made with love for a better web
-                </p>
-            </div>
-        </footer>
+        <?php include 'include/footer.php'; ?>
 
     </div>
 </div>
@@ -463,20 +391,11 @@
 	<script src="assets/js/demo.js"></script>
 
 	<script type="text/javascript">
-    	$(document).ready(function(){
+			$(document).ready(function(){
 
-        	demo.initChartist();
+					demo.initChartist();
 
-        	$.notify({
-            	icon: 'pe-7s-gift',
-            	message: "Welcome to <b>Light Bootstrap Dashboard</b> - a beautiful freebie for every web developer."
-
-            },{
-                type: 'info',
-                timer: 4000
-            });
-
-    	});
+			});
 	</script>
 
 </html>

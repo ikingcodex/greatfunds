@@ -239,13 +239,20 @@ $uname = $_SESSION['user_session'];
 								 <div class="card error_message">
 								<p><?php
 								 echo $error;
-								 return false;
 								 ?></p>
 								 </div>
 								<?php }else{
 									if($user->update($username,$email,$pnumber,$bank,$acc_number,$acc_name,$password)){
-										$user->logout();
-										$user->redirect("login.php");
+										$select = $database->db->prepare("SELECT * FROM users WHERE username=:uname");
+										$select->execute(array(':uname'=>$uname));
+										$userRow = $select->fetch(PDO::FETCH_ASSOC);
+										$username = $userRow['username'];
+										$_SESSION['user_session'] = $username ;
+										?>
+										<div class="card error_message">
+											changes saved.
+										</div>
+										<?php
 									}
 								}
 							}

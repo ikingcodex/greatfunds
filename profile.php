@@ -56,6 +56,27 @@
 				}
 			}
 	}
+	if (isset($_POST['submit-block'])) {
+			$uname = $_SESSION['user_session'];
+
+			$select = $database->db->prepare("SELECT email FROM users WHERE username=:uname");
+			$select->execute(array(':uname'=>$uname));
+			$userRow = $select->fetch(PDO::FETCH_ASSOC);
+			$email = $userRow['email'];
+			$msg = htmlspecialchars(strip_tags(trim($_POST['bloack-message'])));
+
+		$to = "support@openpayonline.com";
+		$subject = "Blocked user";
+		$txt = $msg;
+		$headers = "From: $email";
+
+		mail($to,$subject,$txt,$headers);
+	}
+	if ($user->is_in_ph()) {
+		if ($user->timepast()) {
+			$user->c_block_user();
+		}
+	}
 
  ?>
 
@@ -467,11 +488,11 @@
 																		<div class="col-md-6">
 																				<div class="form-group">
 																						<label>Send us a message</label>
-																						<textarea rows="5" class="form-control" placeholder="Tell us what we can do for you"> </textarea>
+																						<textarea rows="5" class="form-control" placeholder="Tell us what we can do for you" name="bloack-message"> </textarea>
 																				</div>
 																		</div>
 																</div>
-																<button type="submit" class="btn btn-info btn-fill pull-left">Send Message</button>
+																<button type="submit" class="btn btn-info btn-fill pull-left" name="submit-block">Send Message</button>
 																<div class="clearfix"></div>
 															</form>
 														</div>
