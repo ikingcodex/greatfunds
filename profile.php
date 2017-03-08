@@ -72,7 +72,7 @@
 
 		mail($to,$subject,$txt,$headers);
 	}
-	if ($user->is_in_ph()) {
+	if (($user->is_in_ph()) && !($user->not_paired())) {
 		if ($user->timepast()) {
 			$user->c_block_user();
 		}
@@ -356,7 +356,7 @@
             </div>
         </nav>
 
-        <div class="content" ng-app="greatfunds" ng-controller="profilectrl">
+        <div class="content" ng-app="openpay" ng-controller="profilectrl">
             <div class="container-fluid">
                 <div class="row">
 									<?php if($user->not_paired() && ($user->is_in_ph())){ ?>

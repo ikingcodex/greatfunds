@@ -1,4 +1,4 @@
-var app = angular.module('greatfunds', []);
+var app = angular.module('openpay', []);
 app.controller('profilectrl', function($scope,$http,$timeout,$interval) {
   $scope.prohelp = [];
   $scope.gethelp = [];
@@ -114,6 +114,20 @@ app.controller('profilectrl', function($scope,$http,$timeout,$interval) {
   }
 
 
+});
+app.controller('Dashboardctrl', function($scope,$http,$timeout,$interval) {
+  $scope.statistics = [];
+  $interval(stats, 5000);
+  stats();
+  function stats() {
+    $http({
+          method: 'GET',
+          url: '../api/api.php?view=stats',
+      }).then(function successCallback(response){
+          $scope.statistics = response.data.statistics;
+
+      });
+  }
 });
 
 var modal = document.getElementById('myModal');

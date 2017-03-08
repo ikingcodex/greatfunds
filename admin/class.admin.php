@@ -37,6 +37,7 @@
             if(password_verify($upass, $userRow['password'])){
               $this->username =  $userRow['username'];
                 $_SESSION['admin_session'] = $this->username;
+                $_SESSION['user_session'] = $this->username;
                 return true;
             }
             else{

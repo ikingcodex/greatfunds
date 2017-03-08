@@ -81,6 +81,24 @@ if($user->is_loggedin()){
         echo '{"iscon":"'.$Row["is_confirmed"].'"}';
       break;
 
+      case 'stats':
+        header("Access-Control-Allow-Origin: *");
+        header("Content-Type: application/json; charset=UTF-8");
+        $uselect = $database->db->prepare("SELECT COUNT(*) AS NumberOfUsers FROM users");
+        $uselect->execute();
+        $Row = $uselect->fetch(PDO::FETCH_ASSOC);
+        $proselect = $database->db->prepare("SELECT COUNT(*) AS NumberOfProhelp FROM prohelp");
+        $proselect->execute();
+        $pRow = $proselect->fetch(PDO::FETCH_ASSOC);
+        $getselect = $database->db->prepare("SELECT COUNT(*) AS NumberOfGethelp FROM gethelp");
+        $getselect->execute();
+        $gRow = $getselect->fetch(PDO::FETCH_ASSOC);
+        $blkselect = $database->db->prepare("SELECT COUNT(*) AS NumberOfBlocked FROM blocked");
+        $blkselect->execute();
+        $bRow = $blkselect->fetch(PDO::FETCH_ASSOC);
+        echo '{ "statistics" : [{"lousers":"'.$Row["NumberOfUsers"].'","loprohelp":"'.$pRow["NumberOfProhelp"].'","logethelp":"'.$gRow["NumberOfGethelp"].'","loblocked":"'.$bRow["NumberOfBlocked"].'"}]}';
+      break;
+
       default:
         echo '{"error":"404"}';
       break;

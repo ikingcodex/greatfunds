@@ -63,6 +63,7 @@
     <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
     <link href='http://fonts.googleapis.com/css?family=Roboto:400,700,300' rel='stylesheet' type='text/css'>
     <link href="assets/css/pe-icon-7-stroke.css" rel="stylesheet" />
+		<script src="../js/angular.min.js"></script>
 		<style media="screen">
 		.logbot{
 			background: transparent;
@@ -158,8 +159,74 @@
         </nav>
 
 
-        <div class="content">
+        <div class="content" ng-app="openpay" ng-controller="Dashboardctrl">
             <div class="container-fluid">
+							<div class="row" ng-repeat="stats in statistics">
+								<div class="col-md-3">
+									<div class="card">
+											<div class="header">
+													<h4 class="title">{{stats.lousers}}</h4>
+											</div>
+													<div class="footer">
+															<div class="legend">
+																	<i class="fa fa-circle text-success"></i> users
+															</div>
+															<hr>
+															<div class="stats">
+																	<i class="fa fa-clock-o"></i> Number of users
+															</div>
+													</div>
+											</div>
+									</div>
+								<div class="col-md-3">
+									<div class="card">
+											<div class="header">
+													<h4 class="title">{{stats.loprohelp}}</h4>
+											</div>
+													<div class="footer">
+															<div class="legend">
+																	<i class="fa fa-circle text-warning"></i> provide help
+															</div>
+															<hr>
+															<div class="stats">
+																	<i class="fa fa-clock-o"></i> Number of prohelp users
+															</div>
+													</div>
+											</div>
+								</div>
+								<div class="col-md-3">
+									<div class="card">
+											<div class="header">
+													<h4 class="title">{{stats.logethelp}}</h4>
+											</div>
+													<div class="footer">
+															<div class="legend">
+																	<i class="fa fa-circle text-info"></i> Get help
+															</div>
+															<hr>
+															<div class="stats">
+																	<i class="fa fa-clock-o"></i> Number of gethelp users
+															</div>
+													</div>
+											</div>
+								</div>
+								<div class="col-md-3">
+									<div class="card">
+											<div class="header">
+													<h4 class="title">{{stats.loblocked}}</h4>
+											</div>
+													<div class="footer">
+															<div class="legend">
+																	<i class="fa fa-circle text-danger"></i> blocked
+															</div>
+															<hr>
+															<div class="stats">
+																	<i class="fa fa-clock-o"></i> Number of blocked users
+															</div>
+													</div>
+											</div>
+								</div>
+							</div>
                 <div class="row">
                     <div class="col-md-4">
                         <div class="card">
@@ -369,7 +436,8 @@
 </body>
 
     <!--   Core JS Files   -->
-    <script src="assets/js/jquery-1.10.2.js" type="text/javascript"></script>
+	<script src="../js/app.js"></script>
+  <script src="assets/js/jquery-1.10.2.js" type="text/javascript"></script>
 	<script src="assets/js/bootstrap.min.js" type="text/javascript"></script>
 
 	<!--  Checkbox, Radio & Switch Plugins -->

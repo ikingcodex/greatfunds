@@ -81,7 +81,6 @@ if(isset($_POST['btn-login']))
             <button type="submit" name="btn-login" class="btn btn-primary pull-left">
               Login Now
             </button>
-            <span><a href="./signup.php">not yet a member?</a></span> <span style="font-family: 'Playfair Display', serif; font-size:22px;margin:5px">OR</span><span><a href="">forgot your password?</a></span>
           </div>
         </div>
       </form>
