@@ -124,36 +124,31 @@
       }
 
       public function start_timer(){
-        if (!($this->has_pop())) {
-          if (isset($_SESSION['time'])) {
-            $time = $_SESSION['time'];
+        if(($this->is_in_ph()) && !($this->not_paired())){
+          if (!($this->has_pop())) {
+              $uname = $_SESSION['user_session'];
+              $stmt = $this->db->prepare("SELECT paired_time FROM prohelp WHERE username =:user");
+              $stmt->bindparam(":user", $uname);
+              $stmt->execute();
+              $Row = $stmt->fetch(PDO::FETCH_ASSOC);
+              $time_start = date("Y-m-d H:i:s",strtotime($Row['paired_time']));
+            	$end_time = date("Y-m-d H:i:s", strtotime("+ 3 minute", strtotime($time_start)));
+            	$from_time1 = Date("Y-m-d H:i:s");
+            	$to_time = $end_time;
+            	$time_first = strtotime($from_time1);
+            	$time_second = strtotime($to_time);
+            	$countdown = $time_second - $time_first;
+            	$timer = gmdate("H:i:s",$countdown);
+              if (date("Y-m-d H:i:s") >= $end_time) {
+                $this->c_block_user();
+                return "done";
+              }
+              else{
+                return $timer;
+            }
           }else {
-            $uname = $_SESSION['user_session'];
-            $stmt = $this->db->prepare("SELECT paired_time FROM prohelp WHERE username =:user");
-            $stmt->bindparam(":user", $uname);
-            $stmt->execute();
-            $Row = $stmt->fetch(PDO::FETCH_ASSOC);
-            $time_start = date("Y-m-d H:i:s",strtotime($Row['paired_time']));
-            // $time_start = date("Y-m-d H:i:s");
-          	$_SESSION['time'] = $time_start;
-          	$time = $_SESSION['time'];
+            return "Timer Stopped";
           }
-        	$end_time = date("Y-m-d H:i:s", strtotime("+ 3 minute", strtotime($time)));
-        	$from_time1 = Date("Y-m-d H:i:s");
-        	$to_time = $end_time;
-        	$time_first = strtotime($from_time1);
-        	$time_second = strtotime($to_time);
-        	$countdown = $time_second - $time_first;
-        	$timer = gmdate("H:i:s",$countdown);
-          if (date("Y-m-d H:i:s") >= $end_time) {
-            $this->c_block_user();
-            return "done";
-          }
-          else{
-            return $timer;
-          }
-        }else {
-          return "Timer Stopped";
         }
       }
       public function timepast(){

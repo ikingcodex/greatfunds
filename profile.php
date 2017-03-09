@@ -72,11 +72,6 @@
 
 		mail($to,$subject,$txt,$headers);
 	}
-	if (($user->is_in_ph()) && !($user->not_paired())) {
-		if ($user->timepast()) {
-			$user->c_block_user();
-		}
-	}
 
  ?>
 
