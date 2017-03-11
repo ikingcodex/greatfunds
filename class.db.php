@@ -3,8 +3,8 @@
 session_start();
 class DB {
     private $dbHost     = 'localhost';
-    private $dbUsername = 'root';
-    private $dbPassword = '';
+    private $dbUsername = 'openpayuser';
+    private $dbPassword = 'Dopeguyz1';
     private $dbName     = 'greatfunds';
     public $db;
 
