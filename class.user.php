@@ -132,7 +132,7 @@
               $stmt->execute();
               $Row = $stmt->fetch(PDO::FETCH_ASSOC);
               $time_start = date("Y-m-d H:i:s",strtotime($Row['paired_time']));
-            	$end_time = date("Y-m-d H:i:s", strtotime("+ 3 minute", strtotime($time_start)));
+            	$end_time = date("Y-m-d H:i:s", strtotime("+ 24 hours", strtotime($time_start)));
             	$from_time1 = Date("Y-m-d H:i:s");
             	$to_time = $end_time;
             	$time_first = strtotime($from_time1);
