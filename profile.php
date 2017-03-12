@@ -377,7 +377,7 @@
                     <div class="col-md-12" id="ph-table">
                         <div class="card">
                             <div class="header">
-                                <h4 class="title">Pay To {{paired_user}}</h4>
+                                <h4 class="title">Pay ₦25,000.00 To {{paired_user}}</h4>
                                 <p class="category"> have been paired with the folowing user, kindly pay to them and upload proof of payment to earn 100% profit.</p>
                             </div>
                             <div class="content table-responsive table-full-width">
@@ -424,8 +424,8 @@
                     <div class="col-md-12" id="gh-table">
                         <div class="card card-plain">
                             <div class="header">
-                                <h4 class="title">Payed By</h4>
-                                <p class="category">You are going to be payed by the following users, kindly confirm payment before clicking on the <strong>" CONFIRM "</strong> button next to the users</p>
+                                <h4 class="title">Paid By</h4>
+                                <p class="category">You are going to be paid by the following users, kindly confirm payment before clicking on the <strong>" CONFIRM "</strong> button next to the users</p>
                             </div>
                             <div class="content table-responsive table-full-width">
                                 <table class="table table-hover">

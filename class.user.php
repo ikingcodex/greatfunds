@@ -124,6 +124,7 @@
       }
 
       public function start_timer(){
+        date_default_timezone_set('Africa/Lagos');
         if(($this->is_in_ph()) && !($this->not_paired())){
           if (!($this->has_pop())) {
               $uname = $_SESSION['user_session'];

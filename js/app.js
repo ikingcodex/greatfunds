@@ -105,7 +105,7 @@ app.controller('profilectrl', function($scope,$http,$timeout,$interval) {
           url: './api/api.php?view=confirm',
       }).then(function successCallback(response){
           if (response.data.confirmation == "true") {
-            window.location = "http://localhost/greatfunds/"
+            window.location = document.URL;
           }
           else {
             $timeout(confirm, 5000);
