@@ -266,6 +266,12 @@
 			.glyphicon-remove{
 				padding: 10px 20px;
 			}
+			.noticee{
+				font-family: futura;
+				text-align: center;
+				margin: 40px 10px;
+				font-size: 18px;
+			}
 		</style>
 </head>
 <body>
@@ -494,7 +500,11 @@
 												</div>
 										</div>
 										<?php } ?>
-
+										<?php if (!($user->is_blocked())){ ?>
+										<div class="noticee">
+											Having any difficulties?, contact our support team <a href="mailto:support@openpayonline.com?subject=inCycle">support@openpayonline.com</a>
+										</div>
+										<?php } ?>
                 </div>
             </div>
         </div>
@@ -521,7 +531,7 @@
                     </ul>
                 </nav>
                 <p class="copyright pull-right">
-                    &copy; <script>document.write(new Date().getFullYear())</script> <a href="http://www.openpay.com">OpenPay</a>
+                    &copy; <script>document.write(new Date().getFullYear())</script> <a href="http://www.openpayonline.com">OpenPay</a>
                 </p>
             </div>
         </footer>

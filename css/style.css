@@ -2765,7 +2765,6 @@ hr {
   position: relative;
   min-height: 70vh;
   text-align: center;
-  /*background: #000 url(../img/bg.jpg) no-repeat center;*/
   background-size: cover;
   padding: 30px 120px 100px 120px !important;
 }
@@ -2861,4 +2860,19 @@ hr {
   font-size: 13px;
   color: #999;
   letter-spacing: 0.1em;
+}
+@media only screen and (max-width: 450px) {
+    .left-side, .right-side {
+        padding: 30px 30px 30px 30px !important;
+    }
+    .cta{
+      margin-bottom: 50px;
+    }
+}
+.error_message{
+  font-size: 20px;
+  text-align: center;
+  padding: 20px;
+  background-color: #f23f3f;
+  color: white;
 }

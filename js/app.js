@@ -90,7 +90,7 @@ app.controller('profilectrl', function($scope,$http,$timeout,$interval) {
           document.getElementById('timer').innerHTML = "Time Left - "+response.data.timer;
           if (response.data.timer == "done") {
             $interval.cancel($scope.interval);
-            window.location = "http://localhost/greatfunds/"
+            window.location = document.URL;
           }
           else if (response.data.timer == "Timer Stopped") {
             document.getElementById('timer').innerHTML = "Hold on while your being confirmed by "+$scope.paired_user;

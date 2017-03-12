@@ -69,6 +69,13 @@ if(isset($_POST['btn-login']))
     <h3>Welcome back.</h3>
   </header>
 <div id="main-wrapper">
+  <?php if(isset($error)){ ?>
+      <div class="card error_message">
+     <p><?php
+      echo $error;
+      ?></p>
+      </div>
+     <?php } ?>
   <div class="container-fluid">
     <div class="row">
       <form class="" action="login.php" method="post" name="logform" onsubmit="return login()">

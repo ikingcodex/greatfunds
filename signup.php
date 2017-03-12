@@ -19,19 +19,19 @@
     $password=htmlspecialchars(strip_tags(trim($_POST['password'])));
 
      if($username=="") {
-        echo "provide username !";
+        $data = "provide username !";
      }
      else if($email=="") {
-        echo  "provide email id !";
+        $data =  "provide email id !";
      }
      else if(!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        echo 'Please enter a valid email address !';
+        $data = 'Please enter a valid email address !';
      }
      else if($password == "") {
-        echo "provide password !";
+        $data = "provide password !";
      }
      else if(strlen($password) < 6){
-        echo "Password must be atleast 6 characters";
+        $data = "Password must be atleast 6 characters";
      }
      else
      {
@@ -42,17 +42,10 @@
            $row=$stmt->fetch(PDO::FETCH_ASSOC);
 
            if($row['username'] == $username) {
-              echo "sorry username already taken !";
+              $data = "sorry username already taken !";
            }
            else if($row['email'] == $email) {
-              echo "sorry email id already taken !";
-           }
-           else
-           {
-              if($user->register($username,$email,$pnumber,$bank,$acc_number,$acc_name,$password))
-              {
-                  $user->redirect('login.php');
-              }
+              $data = "sorry email id already taken !";
            }
        }
        catch(PDOException $e)
@@ -113,6 +106,22 @@
   </header>
 <div id="main-wrapper">
   <div class="container-fluid">
+  <?php
+  if(isset($_POST['btn-signup'])){
+    if(isset($error)){ ?>
+      <div class="card error_message">
+     <p><?php
+      echo $error;
+      ?></p>
+      </div>
+     <?php }else{
+       if($user->register($username,$email,$pnumber,$bank,$acc_number,$acc_name,$password))
+       {
+           $user->redirect('login.php');
+       }
+     }
+  }
+   ?>
     <div class="row">
       <form class="" action="signup.php" method="post" name="signform" onsubmit="return signup()">
         <div class="col-md-6 left-side">

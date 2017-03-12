@@ -155,6 +155,12 @@ $uname = $_SESSION['user_session'];
 				border: 1px solid grey;
 				margin-bottom: 10px;
 			}
+			@media only screen and (max-width: 450px) {
+			    #bank{
+						width: 80%;
+					}
+			}
+
 			.number_of_cycles{
 				text-align: center;
 				font-size: 20px;
@@ -166,6 +172,7 @@ $uname = $_SESSION['user_session'];
 				padding: 20px;
 				background-color: #f23f3f;
 				color: white;
+				margin: 40px 0px;
 			}
 		</style>
 </head>
