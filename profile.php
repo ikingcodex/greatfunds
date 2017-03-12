@@ -500,6 +500,29 @@
 												</div>
 										</div>
 										<?php } ?>
+										<?php if ($user->is_blocked()) { ?>
+										<div class="col-md-12">
+												<div class="card block-card" style="padding:10px 20px;">
+														<div class="header">
+																<p class="category"> Dear <?php echo $_SESSION['user_session'];?>, you have been reported to <b>support</b> and have been block blocked for a minimum of 2weeks due to your inability to adhere to our policy and pay up whom you were paired to pay. Due to this block on your account, you will be unable to <strong>Recycle</strong> until the time duration is expired. If you have been blocked unjustly or have paid and was blocked, kindly write to our support team ,<strong>support@openpay.com</strong>. include your username when you are writing to us and we will get back to you within two days. <strong>Thanks #TeamOpenPay</strong>.</p>
+														</div>
+														<div class="content table-responsive table-full-width">
+															<form class="" action="profile.php" method="post">
+																<div class="row">
+																		<div class="col-md-6">
+																				<div class="form-group">
+																						<label>Send us a message</label>
+																						<textarea rows="5" class="form-control" placeholder="Tell us what we can do for you" name="bloack-message"> </textarea>
+																				</div>
+																		</div>
+																</div>
+																<button type="submit" class="btn btn-info btn-fill pull-left" name="submit-block">Send Message</button>
+																<div class="clearfix"></div>
+															</form>
+														</div>
+												</div>
+										</div>
+										<?php } ?>
 										<?php if (!($user->is_blocked())){ ?>
 										<div class="noticee">
 											Having any difficulties?, contact our support team <a href="mailto:support@openpayonline.com?subject=inCycle">support@openpayonline.com</a>
