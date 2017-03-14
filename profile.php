@@ -525,7 +525,7 @@
 										<?php } ?>
 										<?php if (!($user->is_blocked())){ ?>
 										<div class="noticee">
-											Having any difficulties?, contact our support team <a href="mailto:support@openpayonline.com?subject=inCycle">support@openpayonline.com</a>, OR send your comlaints to our facebook page <a href="www.facebook.com/openpayonline/">OpenPay Community</a>
+											Having any difficulties?, contact our support team <a href="mailto:support@openpayonline.com?subject=inCycle">support@openpayonline.com</a>, OR send your complaints to our official facebook page <a href="www.facebook.com/openpayonline/">OpenPay Community</a>
 										</div>
 										<?php } ?>
                 </div>
