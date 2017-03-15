@@ -310,7 +310,7 @@
 																								</div>
 																								<h3 style="font-family:futura;text-align:center;">Proof Of Payment</h3>
 																								<div class="pop-image">
-																									<img <?php if($userRow['pop'] != null){ echo 'src ="../uploads/'.$userRow['pop'].'"';} else{?> src ="../img/demo-screen-1.jpg"<?php } ?>  alt="pop-image">
+																									<img <?php if($userRow['pop'] != null){ echo 'src ="../uploads/'.$userRow['pop'].'"';} else{?> src ="../img/no_image.jpeg"<?php } ?>  alt="pop-image">
 																								</div>
 																						</div>
 																					<?php
