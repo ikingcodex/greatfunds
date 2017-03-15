@@ -1,4 +1,4 @@
-<?php
+  <?php
 include '../class.db.php';
 if($user->is_loggedin()){
   $outp = $user->paired_user();
@@ -97,6 +97,25 @@ if($user->is_loggedin()){
         $blkselect->execute();
         $bRow = $blkselect->fetch(PDO::FETCH_ASSOC);
         echo '{ "statistics" : [{"lousers":"'.$Row["NumberOfUsers"].'","loprohelp":"'.$pRow["NumberOfProhelp"].'","logethelp":"'.$gRow["NumberOfGethelp"].'","loblocked":"'.$bRow["NumberOfBlocked"].'"}]}';
+      break;
+
+      case 'ut':
+        header("Access-Control-Allow-Origin: *");
+        header("Content-Type: application/json; charset=UTF-8");
+        $output = "";
+        $select = $database->db->prepare("SELECT username,phone_number,email,registered,number_of_cycles FROM users ORDER BY registered ASC");
+        $select->execute();
+        while($userRow = $select->fetch(PDO::FETCH_ASSOC)) {
+          $time_start = date("Y-m-d H:i:s",strtotime($userRow["registered"]));
+          $end_time = date("Y-m-d H:i:s", strtotime("+ 8 hours", strtotime($time_start)));
+          $registerdtime = $end_time;
+          if ($output != "") {$output .= ",";}
+          $output .= '{"name":"' .$userRow["username"] . '","phone_number":"' .$userRow["phone_number"] . '","email":"' .$userRow["email"] . '",';
+          $output .= '"registered":"' .$registerdtime . '",';
+          $output .= '"cycles":"' .$userRow["number_of_cycles"] . '"}';
+        }
+        $output = '{"users":['.$output.']}';
+        echo $output;
       break;
 
       default:

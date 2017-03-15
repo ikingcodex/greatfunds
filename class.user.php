@@ -286,6 +286,25 @@
           echo $e->getMessage();
         }
       }
+
+      public function ad_in_ph($user){
+        try{
+          $uname = $user;
+          $ph = $this->db->prepare("SELECT * FROM prohelp WHERE username=:uname LIMIT 1");
+          $ph->execute(array(':uname'=>$uname));
+          $userRow=$ph->fetch(PDO::FETCH_ASSOC);
+
+          if($ph->rowCount() > 0){
+              return true;
+          }
+            else{
+              return false;
+            }
+          }
+        catch(PDOException $e){
+          echo $e->getMessage();
+        }
+      }
       public function is_in_gh(){
         try{
           $uname = $_SESSION['user_session'];
@@ -408,9 +427,103 @@
         }
       }
 
+      public function ad_block_user($user){
+        try{
+            $select = $this->db->prepare("SELECT username,paired_with,phone_number,account_name,account_number,bank_name,pop FROM prohelp WHERE username=:uname LIMIT 1");
+            $uname = $user;
+            $select->execute(array(':uname'=>$uname));
+            $userRow = $select->fetch(PDO::FETCH_ASSOC);
+            if($select->rowCount() > 0){
+              $username = $userRow['username'];
+              $paired_with = $userRow['paired_with'];
+              $phone_number = $userRow['phone_number'];
+              $account_name = $userRow['account_name'];
+              $account_number = $userRow['account_number'];
+              $bank_name = $userRow['bank_name'];
+              $pop = $userRow['pop'];
+              $insert = $this->db->prepare("INSERT INTO blocked(username,paired_with,phone_number,account_name,bank_name,account_number,pop)
+              VALUES(:username, :paired_with, :pnumber, :acc_name, :bank, :acc_number, :pop)");
+              $insert->bindparam(":username", $username);
+              $insert->bindparam(":paired_with", $paired_with);
+              $insert->bindparam(":pnumber", $phone_number);
+              $insert->bindparam(":acc_name", $account_name);
+              $insert->bindparam(":acc_number", $account_number);
+              $insert->bindparam(":bank", $bank_name);
+              $insert->bindparam(":pop", $pop);
+              $insert->execute();
+              $stmt = $this->db->prepare("SELECT userid, username, num_of_pair,is_admin FROM gethelp WHERE username=:paired_with");
+              $stmt->bindparam(":paired_with", $paired_with);
+              $stmt->execute();
+              $Row = $stmt->fetch(PDO::FETCH_ASSOC);
+              if($stmt->rowCount() > 0){
+                $userid= $Row['userid'];
+                $username = $Row['username'];
+                if ($Row['is_admin'] == 1) {
+                  if ($Row['num_of_pair'] == 4) {
+                    $newval = $Row['num_of_pair'] - 1;
+                    $update = $this->db->prepare("UPDATE gethelp SET num_of_pair=:numofpair,is_paired=0 WHERE userid=:userid");
+                    $update->bindparam(":userid", $userid);
+                    $update->bindparam(":numofpair", $newval);
+                    $update->execute();
+                  }
+                  else{
+                  $newval = $Row['num_of_pair'] - 1;
+                  $update = $this->db->prepare("UPDATE gethelp SET num_of_pair=:numofpair WHERE username=:username");
+                  $update->bindparam(":username", $username);
+                  $update->bindparam(":numofpair", $newval);
+                  $update->execute();
+                  }
+                }
+                else{
+                  if ($Row['num_of_pair'] == 2) {
+                    $newval = $Row['num_of_pair'] - 1;
+                    $update = $this->db->prepare("UPDATE gethelp SET num_of_pair=:numofpair,is_paired=0 WHERE userid=:userid");
+                    $update->bindparam(":userid", $userid);
+                    $update->bindparam(":numofpair", $newval);
+                    $update->execute();
+                  }
+                  else{
+                  $newval = $Row['num_of_pair'] - 1;
+                  $update = $this->db->prepare("UPDATE gethelp SET num_of_pair=:numofpair WHERE username=:username");
+                  $update->bindparam(":username", $username);
+                  $update->bindparam(":numofpair", $newval);
+                  $update->execute();
+                  }
+                }
+              }
+              $delete = $this->db->prepare("DELETE FROM prohelp WHERE username =:user");
+              $uname = $user;
+              $delete->bindparam(":user", $uname);
+              $delete->execute();
+            }
+            $update = $this->db->prepare("UPDATE users SET is_blocked = 1 WHERE username =:user");
+            $update->bindparam(":user", $uname);
+            $update->execute();
+
+        }catch (PDOException $e) {
+          echo $e->getMessage();
+        }
+      }
+
       public function is_blocked(){
         try{
           $uname = $_SESSION['user_session'];
+          $stmt = $this->db->prepare("SELECT * FROM users WHERE username= :uname AND is_blocked=1 ");
+          $stmt->execute(array(':uname'=>$uname));
+          if($stmt->rowCount() > 0){
+              return true;
+          }
+            else{
+              return false;
+            }
+          }
+        catch(PDOException $e){
+          echo $e->getMessage();
+        }
+      }
+      public function ad_blocked($user){
+        try{
+          $uname = $user;
           $stmt = $this->db->prepare("SELECT * FROM users WHERE username= :uname AND is_blocked=1 ");
           $stmt->execute(array(':uname'=>$uname));
           if($stmt->rowCount() > 0){
@@ -437,6 +550,42 @@
             else{
               return false;
             }
+          }
+        catch(PDOException $e){
+          echo $e->getMessage();
+        }
+      }
+
+      public function ad_blockedlist($user){
+        try{
+          $uname = $user;
+          $user = $this->db->prepare("SELECT * FROM blocked WHERE username=:uname");
+          $user->execute(array(':uname'=>$uname));
+
+          if($user->rowCount() > 0){
+              return true;
+          }
+            else{
+              return false;
+            }
+          }
+        catch(PDOException $e){
+          echo $e->getMessage();
+        }
+      }
+
+      public function ad_unblock($user){
+        try{
+            $uname = $user;
+            $stmt = $this->db->prepare("SELECT * FROM blocked WHERE username =:uname");
+            $stmt->execute(array(':uname'=>$uname));
+            if($stmt->rowCount() > 0){
+              $stmt = $this->db->prepare("DELETE FROM blocked WHERE username =:uname ");
+              $stmt->execute(array(':uname'=>$uname));
+            }
+            $update = $this->db->prepare("UPDATE users SET is_blocked = 0 WHERE username =:user");
+            $update->bindparam(":user", $uname);
+            $update->execute();
           }
         catch(PDOException $e){
           echo $e->getMessage();

@@ -116,6 +116,11 @@ app.controller('profilectrl', function($scope,$http,$timeout,$interval) {
 
 });
 app.controller('Dashboardctrl', function($scope,$http,$timeout,$interval) {
+  var ut = document.getElementById('user-table');
+  if (ut != null && ut != ""){
+    $scope.utable = [];
+      get();
+  }
   $scope.statistics = [];
   $interval(stats, 5000);
   stats();
@@ -128,6 +133,15 @@ app.controller('Dashboardctrl', function($scope,$http,$timeout,$interval) {
 
       });
   }
+  function get() {
+    $http({
+        method: 'GET',
+        url: '../api/api.php?view=ut'
+    }).then(function successCallback(response){
+      $scope.utable = response.data.users;
+    });
+  }
+
 });
 
 var modal = document.getElementById('myModal');
