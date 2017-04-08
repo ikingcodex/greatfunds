@@ -207,7 +207,7 @@
               $this->paired_user();
               $this->start_timer();
             }else{
-              $stmt = $this->db->prepare("SELECT userid, username, num_of_pair FROM gethelp WHERE num_of_pair < 2 ORDER BY time DESC LIMIT 1");
+              $stmt = $this->db->prepare("SELECT userid, username, num_of_pair FROM gethelp WHERE num_of_pair < 2 ORDER BY time ASC LIMIT 1");
               $stmt->execute();
               $Row = $stmt->fetch(PDO::FETCH_ASSOC);
               if($stmt->rowCount() > 0){
